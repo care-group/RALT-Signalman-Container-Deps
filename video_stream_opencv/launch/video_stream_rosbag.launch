@@ -1,0 +1,5 @@
+<launch>
+
+	<node pkg="rosbag" type="record" name="raltVideoCapture" respawn="true" output="screen" args="-j -o /home/hsr/videoCapture/test.bag /ch01/image_raw/compressed /ch02/image_raw/compressed /ch03/image_raw/compressed /ch04/image_raw/compressed /ch05/image_raw/compressed /ch06/image_raw/compressed /ch07/image_raw/compressed /ch08/image_raw/compressed"/>
+
+</launch>

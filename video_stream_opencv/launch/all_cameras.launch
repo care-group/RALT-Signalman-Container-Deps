@@ -1,0 +1,12 @@
+<launch>
+
+	<include file="$(find video_stream_opencv)/launch/ch01.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch02.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch03.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch04.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch05.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch06.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch07.launch" />
+	<include file="$(find video_stream_opencv)/launch/ch08.launch" />
+
+</launch>
