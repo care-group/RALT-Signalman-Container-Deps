@@ -12,8 +12,7 @@ from std_msgs.msg import String
 
 SENSORS_CONFIG = "sensors.yaml"
 PERIODICITY = 1.0
-OPENHAB_URL = "https://caregrouphwu%40icloud.com:G00drobot6@home.myopenhab.org/rest/items"
-# OPENHAB_URL = "http://192.168.1.130:8080/rest/items"
+OPENHAB_URL = "http://192.168.1.130:8080/rest/items"
 
 class Main():
     def __init__(self, pub):
