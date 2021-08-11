@@ -1,23 +1,22 @@
 #! /usr/bin/env python
 
 import rospy
-import json
-import pymongo
 import threading
 import socket
 
 from std_msgs.msg import String
+from csv_tools import CSVTools
+import time
 
 HOST = '0.0.0.0'
-PORT = 5000
-
-mongodb_client = pymongo.MongoClient("mongodb://localhost:27017/")
-target_db = mongodb_client["watch_data"]
-target_col = target_db["stream"]
+PORT = 6000
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
     pub = rospy.Publisher('apple_watch_publisher', String, queue_size=10)
+
+    csvt = CSVTools()
+    csvt.create_event_file()
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -37,8 +36,12 @@ if __name__ == '__main__':
 
                     print(count)
                     count = count + 1
+                    
+                    timestamp_ms = time.time()
+                    timestamp_formatted = time.ctime(self.timestamp_ms)
 
-                    # x = target_col.insert_one(json_data)
+                    event = [data, timestamp_ms, timestamp_formatted]
+                    csvt.update(event)
 
                     if not rospy.is_shutdown():
                         pub.publish(message)
