@@ -41,7 +41,7 @@ if __name__ == '__main__':
                     timestamp_formatted = time.ctime(timestamp_ms)
 
                     event = [data, timestamp_ms, timestamp_formatted]
-                    csvt.update(event)
+                    csvt.write_events(event)
 
                     if not rospy.is_shutdown():
                         pub.publish(message)
