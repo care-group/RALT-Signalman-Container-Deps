@@ -12,7 +12,7 @@ HOST = '0.0.0.0'
 PORT = 6000
 
 if __name__ == '__main__':
-    threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
+    rospy.init_node('aw_pub', disable_signals=True)
     pub = rospy.Publisher('apple_watch_publisher', String, queue_size=10)
 
     csvt = CSVTools()
