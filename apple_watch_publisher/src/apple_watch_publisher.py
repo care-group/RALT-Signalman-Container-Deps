@@ -12,7 +12,7 @@ HOST = '0.0.0.0'
 PORT = 6000
 
 if __name__ == '__main__':
-    rospy.init_node('aw_pub', disable_signals=True)
+    threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
     pub = rospy.Publisher('apple_watch_publisher', String, queue_size=10)
 
     csvt = CSVTools()
@@ -41,7 +41,8 @@ if __name__ == '__main__':
                     events = [event]
                     csvt.write_events(events)
 
-                    pub.publish(message)
+                if not rospy.is_shutdown():
+                        pub.publish(message)
                 else:
                     break
         finally:
