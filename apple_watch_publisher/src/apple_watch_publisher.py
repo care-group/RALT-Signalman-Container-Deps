@@ -38,7 +38,7 @@ if __name__ == '__main__':
                     count = count + 1
                     
                     timestamp_ms = time.time()
-                    timestamp_formatted = time.ctime(self.timestamp_ms)
+                    timestamp_formatted = time.ctime(timestamp_ms)
 
                     event = [data, timestamp_ms, timestamp_formatted]
                     csvt.update(event)
