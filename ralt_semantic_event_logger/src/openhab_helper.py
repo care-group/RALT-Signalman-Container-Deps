@@ -17,7 +17,8 @@ class OpenHABHelper():
         try:
             response = requests.get(self.url)
         except:
-            self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL.')
+            self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL. Retrying...')
+            self.update()
 
         if response.status_code != 200:
             self.logger.log_warn('No response from OpenHAB!')
