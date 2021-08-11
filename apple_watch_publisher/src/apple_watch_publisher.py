@@ -33,9 +33,6 @@ if __name__ == '__main__':
                 if data:
                     print(data)
                     message = str(data)
-
-                    print(count)
-                    count = count + 1
                     
                     timestamp_ms = time.time()
                     timestamp_formatted = time.ctime(timestamp_ms)
@@ -44,8 +41,7 @@ if __name__ == '__main__':
                     events = [event]
                     csvt.write_events(events)
 
-                    if not rospy.is_shutdown():
-                        pub.publish(message)
+                    pub.publish(message)
                 else:
                     break
         finally:
