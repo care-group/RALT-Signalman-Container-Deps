@@ -83,6 +83,9 @@ if __name__ == '__main__':
 
     app = Flask(__name__)
     CORS(app)
+    
+    sleep(20)
+    print('Delayed start...')
 
     threading.Thread(target=lambda: m.loop()).start()
 
