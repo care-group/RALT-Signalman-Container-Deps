@@ -56,7 +56,7 @@ class Main():
                 start_time = time()
 
             self.current_state = False
-            while self.current_state:
+            while not self.current_state:
                 self.current_state = self.openhab_helper.update()
             
             if self.step == 0:
@@ -88,5 +88,8 @@ class Main():
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
     pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
+    
+    sleep(10)
+    
     m = Main(pub)
     m.loop()
