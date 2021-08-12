@@ -5,6 +5,7 @@ import threading
 from time import time, strftime, sleep
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from std_msgs import msg
 
 from std_msgs.msg import String, Int32
@@ -82,6 +83,7 @@ if __name__ == '__main__':
     m = Main()
 
     app = Flask(__name__)
+    CORS(app)
 
     threading.Thread(target=lambda: m.loop()).start()
 
