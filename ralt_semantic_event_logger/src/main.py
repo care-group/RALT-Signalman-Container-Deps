@@ -55,7 +55,9 @@ class Main():
             if self.real_time:
                 start_time = time()
 
-            self.current_state = self.openhab_helper.update()
+            self.current_state = False
+            while self.current_state:
+                self.current_state = self.openhab_helper.update()
             
             if self.step == 0:
                 self.detect_events.init_semantic_state(self.current_state)
