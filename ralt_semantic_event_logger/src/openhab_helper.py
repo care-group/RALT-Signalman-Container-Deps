@@ -20,7 +20,9 @@ class OpenHABHelper():
             self.logger.log(msg)
             response = requests.get(self.url)
             
+            print(response)
             items = response.json()
+            print(items)
         
             return self.process(items)
         except:
