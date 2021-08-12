@@ -68,7 +68,6 @@ class Main():
 
                 self.bag.close()            
 
-            print('Not recording.')
             sleep(1)
 
     def set_state(self, cmd):
