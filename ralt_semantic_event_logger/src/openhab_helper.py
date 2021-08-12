@@ -26,9 +26,8 @@ class OpenHABHelper():
         
             return self.process(items)
         except:
-            self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL. Retrying...')
-            sleep(5)
-            self.update()
+            self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL.')
+            return False
 
     def process(self, items):
         relevant_items = {}
