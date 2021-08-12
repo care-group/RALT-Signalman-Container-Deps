@@ -19,18 +19,14 @@ class OpenHABHelper():
             msg = 'Attempting to connect to:' + self.url
             self.logger.log(msg)
             response = requests.get(self.url)
+            
+            items = response.json()
+        
+            return self.process(items)
         except:
             self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL. Retrying...')
             sleep(5)
             self.update()
-
-        if response.status_code != 200:
-            self.logger.log_warn('No response from OpenHAB!')
-            return None
-
-        items = response.json()
-        
-        return self.process(items)
 
     def process(self, items):
         relevant_items = {}
