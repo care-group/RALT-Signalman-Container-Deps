@@ -1,6 +1,7 @@
 import requests
 
 from log import Log
+from time import sleep
 
 class OpenHABHelper():
     def __init__(self, url, sensor_labels):
@@ -18,6 +19,7 @@ class OpenHABHelper():
             response = requests.get(self.url)
         except:
             self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL. Retrying...')
+            sleep(5)
             self.update()
 
         if response.status_code != 200:
