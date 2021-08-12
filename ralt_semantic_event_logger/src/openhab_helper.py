@@ -16,6 +16,8 @@ class OpenHABHelper():
 
     def update(self):
         try:
+            msg = 'Attempting to connect to:' + self.url
+            self.logger.log(msg)
             response = requests.get(self.url)
         except:
             self.logger.log_warn('Unable to connect to OpenHAB endpoint. Check OPENHAB_URL. Retrying...')
