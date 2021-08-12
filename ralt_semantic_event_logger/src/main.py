@@ -29,6 +29,8 @@ class Main():
 
         # set to True for real-time mode (1 second/sample)
         self.real_time = True
+        
+        self.debug = False
 
         # * * * * * * * * * * * * * * *
 
@@ -76,8 +78,9 @@ class Main():
                 delay_time = PERIODICITY - time_taken
 
                 if delay_time >= 0.0:
-                    msg = 'Loop time was: ' + str(time_taken) + ', sleeping for: ' + str(delay_time) + ' seconds.'
-                    self.logger.log(msg)
+                    if self.debug:
+                        msg = 'Loop time was: ' + str(time_taken) + ', sleeping for: ' + str(delay_time) + ' seconds.'
+                        self.logger.log(msg)
                     sleep(delay_time)
                 else:
                     self.logger.log_warn('Loop took longer than the specified period. System is not able to perform in real-time at this periodicity.')
