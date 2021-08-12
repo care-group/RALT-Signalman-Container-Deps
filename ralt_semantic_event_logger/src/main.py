@@ -12,7 +12,7 @@ from std_msgs.msg import String
 
 SENSORS_CONFIG = "sensors.yaml"
 PERIODICITY = 1.0
-OPENHAB_URL = "http://0.0.0.0:8080/rest/items"
+OPENHAB_URL = "http://127.0.0.1:8080/rest/items"
 
 class Main():
     def __init__(self, pub):
