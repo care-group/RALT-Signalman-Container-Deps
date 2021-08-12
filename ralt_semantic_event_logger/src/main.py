@@ -12,7 +12,7 @@ from std_msgs.msg import String
 
 SENSORS_CONFIG = "sensors.yaml"
 PERIODICITY = 1.0
-OPENHAB_URL = "http://127.0.1.1:8080/rest/items"
+OPENHAB_URL = "http://0.0.0.0:8080/rest/items"
 
 class Main():
     def __init__(self, pub):
@@ -88,8 +88,6 @@ class Main():
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
     pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
-    
-    sleep(10)
     
     m = Main(pub)
     m.loop()
