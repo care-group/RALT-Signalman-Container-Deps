@@ -9,7 +9,7 @@ from csv_tools import CSVTools
 import time
 
 HOST = '0.0.0.0'
-PORT = 6000
+PORT = 5001
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
