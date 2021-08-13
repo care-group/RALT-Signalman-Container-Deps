@@ -9,7 +9,7 @@ from flask_cors import CORS
 from std_msgs import msg
 
 from std_msgs.msg import String, Int32
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CompressedImage
 
 class Main():
     def __init__(self):
@@ -69,7 +69,7 @@ class Main():
                     for topic, msg_type in zip(self.topics, self.msg_types):
                         if msg_type == "String":
                             rospy.Subscriber(topic, String, self.string_callback, callback_args=topic)
-                        elif msg_type == "Image":
+                        elif msg_type == "Image" or msg_type == "CompressedImage":
                             rospy.Subscriber(topic, Image, self.image_callback, callback_args=topic)
                         elif msg_type == "Int32":
                             rospy.Subscriber(topic, Int32, self.int32_callback, callback_args=topic)
