@@ -46,7 +46,7 @@ class Main():
     def callback(self, data, topic):
         if self.run:
             self.bag.write(topic, data)
-            print("I heard from topic:", topic, "who said:", data)
+            # print("I heard from topic:", topic, "who said:", data)
 
     def loop(self):
         while(True):
