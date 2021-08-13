@@ -98,7 +98,7 @@ if __name__ == '__main__':
     sleep(10)
 
     threading.Thread(target=lambda: m.loop()).start()
-`
+    
     @app.route('/control', methods = ['POST'])
     def control_handler():
         data = request.get_data()
