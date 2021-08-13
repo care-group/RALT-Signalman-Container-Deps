@@ -43,7 +43,17 @@ class Main():
             print('Will check for messages on these topics...')
             print(self.topics, self.msg_types)
 
-    def callback(self, data, topic):
+    def string_callback(self, data, topic):
+        if self.run:
+            self.bag.write(topic, data)
+            # print("I heard from topic:", topic, "who said:", data)
+           
+    def image_callback(self, data, topic):
+        if self.run:
+            self.bag.write(topic, data)
+            # print("I heard from topic:", topic, "who said:", data)
+            
+    def int32_callback(self, data, topic):
         if self.run:
             self.bag.write(topic, data)
             # print("I heard from topic:", topic, "who said:", data)
@@ -58,11 +68,11 @@ class Main():
                 while(self.run):
                     for topic, msg_type in zip(self.topics, self.msg_types):
                         if msg_type == "String":
-                            rospy.Subscriber(topic, String, self.callback, callback_args=topic)
+                            rospy.Subscriber(topic, String, self.string_callback, callback_args=topic)
                         elif msg_type == "Image":
-                            rospy.Subscriber(topic, Image, self.callback, callback_args=topic)
+                            rospy.Subscriber(topic, Image, self.image_callback, callback_args=topic)
                         elif msg_type == "Int32":
-                            rospy.Subscriber(topic, Int32, self.callback, callback_args=topic)
+                            rospy.Subscriber(topic, Int32, self.int32_callback, callback_args=topic)
                     while not rospy.core.is_shutdown() and self.run:
                         rospy.rostime.wallsleep(0.5)
 
@@ -88,7 +98,7 @@ if __name__ == '__main__':
     sleep(10)
 
     threading.Thread(target=lambda: m.loop()).start()
-
+`
     @app.route('/control', methods = ['POST'])
     def control_handler():
         data = request.get_data()
