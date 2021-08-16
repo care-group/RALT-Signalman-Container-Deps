@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import rospy
-import rosbag
 import threading
 from time import time, strftime, sleep
 import subprocess
@@ -49,7 +48,6 @@ class Main():
             if self.run:
                 date_time = strftime("%Y%m%d-%H%M%S")
                 self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '.bag'
-                self.bag = rosbag.Bag(self.bag_name, 'w')
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
