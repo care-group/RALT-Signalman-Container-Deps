@@ -3,6 +3,7 @@ import rospy
 import rosbag
 import threading
 from time import time, strftime, sleep
+import subprocess
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -42,22 +43,7 @@ class Main():
             
             print('Will check for messages on these topics...')
             print(self.topics, self.msg_types)
-
-    def string_callback(self, data, topic):
-        if self.run:
-            self.bag.write(topic, data)
-            # print("I heard from topic:", topic, "who said:", data)
-           
-    def image_callback(self, data, topic):
-        if self.run:
-            self.bag.write(topic, data)
-            # print("I heard from topic:", topic, "who said:", data)
             
-    def int32_callback(self, data, topic):
-        if self.run:
-            self.bag.write(topic, data)
-            # print("I heard from topic:", topic, "who said:", data)
-
     def loop(self):
         while(True):
             if self.run:
@@ -66,17 +52,16 @@ class Main():
                 self.bag = rosbag.Bag(self.bag_name, 'w')
 
                 while(self.run):
-                    for topic, msg_type in zip(self.topics, self.msg_types):
-                        if msg_type == "String":
-                            rospy.Subscriber(topic, String, self.string_callback, callback_args=topic)
-                        elif msg_type == "Image" or msg_type == "CompressedImage":
-                            rospy.Subscriber(topic, Image, self.image_callback, callback_args=topic)
-                        elif msg_type == "Int32":
-                            rospy.Subscriber(topic, Int32, self.int32_callback, callback_args=topic)
+                    cmd = ['rosbag', 'record', '-O', self.bag_name]
+                    for topic in self.topics:
+                        cmd.append(topic)
+                    
+                    self.p = subprocess.Popen(cmd)
+
                     while not rospy.core.is_shutdown() and self.run:
                         rospy.rostime.wallsleep(0.5)
 
-                self.bag.close()            
+                p.terminate()            
 
             sleep(1)
 
