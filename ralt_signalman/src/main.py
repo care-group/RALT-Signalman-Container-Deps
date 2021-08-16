@@ -61,7 +61,7 @@ class Main():
                     while not rospy.core.is_shutdown() and self.run:
                         rospy.rostime.wallsleep(0.5)
 
-                p.terminate()            
+                self.p.terminate()            
 
             sleep(1)
 
