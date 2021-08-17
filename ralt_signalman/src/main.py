@@ -35,7 +35,7 @@ class Main():
                 lines_clean.append(line.rstrip('\n'))
 
             for line in lines_clean:
-                self.topics.append(splits[0])
+                self.topics.append(line)
             
             print('Will check for messages on these topics...')
             print(self.topics)
