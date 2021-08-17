@@ -82,7 +82,6 @@ class DetectEvents():
             return events
 
         events = self.generate_events(filtered_semantic)
-        self.logger.log('Recording semantic event...')
         print(events)
 
         return events
