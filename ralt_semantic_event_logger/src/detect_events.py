@@ -89,8 +89,11 @@ class DetectEvents():
     def check_for_changes_raw(self, current, previous):
         filtered = {}
         for key, value in current.items():
-            if value['state'] != previous[key]['state']: # this should be != in deployment!
-                filtered[key] = value
+            if value['state'] != 'UNDEF' and previous[key]['state'] != 'UNDEF':
+                if value['state'] != previous[key]['state']: # this should be != in deployment!
+                    filtered[key] = value
+            else:
+                print('[WARN] Sensor', key, 'has entered an undefined state.')
 
         return filtered
 
