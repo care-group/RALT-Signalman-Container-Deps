@@ -18,7 +18,6 @@ class Main():
         self.date_time = strftime("%Y%m%d-%H%M%S")
 
         self.topics = []
-        self.msg_types = []
 
         self.run = False
         self.bag_name = 'No current or previous bag has been saved.'
@@ -36,12 +35,10 @@ class Main():
                 lines_clean.append(line.rstrip('\n'))
 
             for line in lines_clean:
-                splits = line.split(', ')
                 self.topics.append(splits[0])
-                self.msg_types.append(splits[1])
             
             print('Will check for messages on these topics...')
-            print(self.topics, self.msg_types)
+            print(self.topics)
             
     def loop(self):
         while(True):
