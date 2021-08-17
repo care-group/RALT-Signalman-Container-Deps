@@ -2,6 +2,7 @@
 import rospy
 import threading
 from time import sleep, strftime, time
+
 from log import Log
 from load_yaml import LoadYAML
 from openhab_helper import OpenHABHelper
@@ -80,10 +81,10 @@ class Main():
                 if delay_time >= 0.0:
                     if self.debug:
                         msg = 'Loop time was: ' + str(time_taken) + ', sleeping for: ' + str(delay_time) + ' seconds.'
-                        self.logger.log(msg)
+                        print(msg)
                     sleep(delay_time)
                 else:
-                    self.logger.log_warn('Loop took longer than the specified period. System is not able to perform in real-time at this periodicity.')
+                    print('Loop took longer than the specified period. System is not able to perform in real-time at this periodicity.')
 
             self.previous_state = self.current_state
             self.step = self.step + 1
