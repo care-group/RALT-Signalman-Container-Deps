@@ -3,10 +3,11 @@
 import rospy
 import threading
 import socket
+import time
+
+from csv_tools import CSVTools
 
 from std_msgs.msg import String
-from csv_tools import CSVTools
-import time
 
 HOST = '0.0.0.0'
 PORT = 5001
@@ -23,11 +24,10 @@ if __name__ == '__main__':
     s.bind((HOST, PORT))
     s.listen(1)
 
-    count = 0
-
     while True:
         conn, client = s.accept()
         try:
+            print('Client connected. Waiting for data...')
             while True:
                 data = conn.recv(1024)
                 if data:
@@ -40,6 +40,9 @@ if __name__ == '__main__':
                     event = [data, timestamp_ms, timestamp_formatted]
                     events = [event]
                     csvt.write_events(events)
+                else:
+                    print('Client disconnect. Listening for new connection...')
+                    break
 
                 if not rospy.is_shutdown():
                         pub.publish(message)
