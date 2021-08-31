@@ -112,14 +112,18 @@ if __name__ == '__main__':
 
         return jsonify(status)
 
-    @app.route('/merge', methods = ['GET'])
+    @app.route('/merge', methods = ['POST'])
     def merge_handler():
+        data = request.get_data()
+        
         resp = "OK"
 
         main_bag = m.bag_name
+        
+        hsr_bag = data
 
-        hsr_bag = main_bag.strip('.bag')
-        hsr_bag = hsr_bag + '_hsr.bag'
+        #hsr_bag = main_bag.strip('.bag')
+        #hsr_bag = hsr_bag + '_hsr.bag'
         print(main_bag, hsr_bag)
 
         out_bag = main_bag.strip('.bag')
