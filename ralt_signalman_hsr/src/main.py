@@ -27,7 +27,7 @@ class Main():
         print('Ready.')
 
     def load_topics(self):
-        with open('/home/sandbox/shared/input/topics_hsr.txt') as f:
+        with open('/home/sandbox/shared/input/topics.txt') as f:
             lines = f.readlines()
 
             lines_clean = []
