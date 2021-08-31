@@ -23,6 +23,7 @@ class Main():
 
         self.run = False
         self.bag_name = 'No current or previous bag has been saved.'
+        self.merged_bag_name = 'No bag files have been merged.'
 
         self.load_topics()
 
@@ -67,6 +68,9 @@ class Main():
             self.run = True
         else:
             self.run = False
+            
+    def set_merged_bag_name(self, name):
+        self.merged_bag_name = name
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_signalman', disable_signals=True)).start()
@@ -104,6 +108,7 @@ if __name__ == '__main__':
         status["topics"] = m.topics
         status["running"] = m.run
         status["bagfile"] = m.bag_name
+        status["merged_bagfile"] = m.merged_bag_name
 
         return jsonify(status)
 
@@ -111,7 +116,6 @@ if __name__ == '__main__':
     def merge_handler():
         resp = "OK"
 
-        m.bag_name
         main_bag = m.bag_name
 
         hsr_bag = main_bag.strip('.bag')
@@ -120,6 +124,8 @@ if __name__ == '__main__':
 
         out_bag = main_bag.strip('.bag')
         out_bag = out_bag + '_merged.bag'
+        
+        m.set_merged_bag_name(out_bag)
 
         merge_bag(main_bag, hsr_bag, outfile=out_bag) 
 
