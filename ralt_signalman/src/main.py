@@ -1,15 +1,17 @@
 #! /usr/bin/env python
+from rosbag.bag import Bag
 import rospy
 import threading
 from time import time, strftime, sleep
 import subprocess
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from std_msgs import msg
 
+from std_msgs import msg
 from std_msgs.msg import String, Int32
 from sensor_msgs.msg import Image, CompressedImage
+
+from bag_merge import merge_bag
 
 class Main():
     def __init__(self):
@@ -27,7 +29,7 @@ class Main():
         print('Ready.')
 
     def load_topics(self):
-        with open('/home/sandbox/shared/input/topics.txt') as f:
+        with open('/home/ronsm/Desktop/input/topics.txt') as f:
             lines = f.readlines()
 
             lines_clean = []
@@ -44,7 +46,7 @@ class Main():
         while(True):
             if self.run:
                 date_time = strftime("%Y%m%d-%H%M%S")
-                self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '.bag'
+                self.bag_name = '/home/ronsm/Desktop/output/data_' + date_time + '.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
@@ -104,5 +106,23 @@ if __name__ == '__main__':
         status["bagfile"] = m.bag_name
 
         return jsonify(status)
+
+    @app.route('/merge', methods = ['GET'])
+    def merge_handler():
+        resp = "OK"
+
+        m.bag_name
+        main_bag = m.bag_name
+
+        hsr_bag = main_bag.strip('.bag')
+        hsr_bag = hsr_bag + '_hsr.bag'
+        print(main_bag, hsr_bag)
+
+        out_bag = main_bag.strip('.bag')
+        out_bag = out_bag + '_merged.bag'
+
+        merge_bag(main_bag, hsr_bag, outfile=out_bag) 
+
+        return jsonify(resp)
 
     app.run(host='0.0.0.0', port = 5002)
