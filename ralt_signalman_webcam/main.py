@@ -26,9 +26,9 @@ class Main():
 
                 self.filenames = []
 
-                fn_1 = '/home/sandbox/shared/output/camera_1_' + date_time + '.mp4'
-                fn_2 = '/home/sandbox/shared/output/camera_2_' + date_time + '.mp4'
-                fn_3 = '/home/sandbox/shared/output/camera_3_' + date_time + '.mp4'
+                fn_1 = '/home/sandbox/shared/output/camera_1_' + date_time + '.mkv'
+                fn_2 = '/home/sandbox/shared/output/camera_2_' + date_time + '.mkv'
+                fn_3 = '/home/sandbox/shared/output/camera_3_' + date_time + '.mkv'
 
                 self.filenames.append(fn_1)
                 self.filenames.append(fn_2)
