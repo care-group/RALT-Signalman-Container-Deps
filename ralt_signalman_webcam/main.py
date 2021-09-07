@@ -69,6 +69,7 @@ if __name__ == '__main__':
     @app.route('/control', methods = ['POST'])
     def control_handler():
         data = request.get_data()
+        data = data.decode("utf-8") 
         print(data)
 
         resp = "OK"
