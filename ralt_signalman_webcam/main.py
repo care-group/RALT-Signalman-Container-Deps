@@ -34,18 +34,17 @@ class Main():
                 self.filenames.append(fn_2)
                 self.filenames.append(fn_3)
 
-                while(self.run):
-                    cmd_1 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video0', self.filenames[0]]
-                    cmd_2 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video2', self.filenames[1]]
-                    cmd_3 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video4', self.filenames[2]]
+                cmd_1 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video0', self.filenames[0]]
+                cmd_2 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video2', self.filenames[1]]
+                cmd_3 = ['ffmpeg', '-f', 'v4l2', '-framerate', '25', '-video_size', '1920x1080', '-input_format', 'mjpeg', '-i', '/dev/video4', self.filenames[2]]
 
-                    self.p_1 = subprocess.Popen(cmd_1)
-                    self.p_2 = subprocess.Popen(cmd_2)
-                    self.p_3 = subprocess.Popen(cmd_3)
+                self.p_1 = subprocess.Popen(cmd_1)
+                self.p_2 = subprocess.Popen(cmd_2)
+                self.p_3 = subprocess.Popen(cmd_3)
 
-                    while not rospy.core.is_shutdown() and self.run:
-                        rospy.rostime.wallsleep(0.5)
-
+                while self.run:
+                    sleep(1)
+                    
                 self.p_1.terminate()
                 self.p_2.terminate()
                 self.p_3.terminate()            
