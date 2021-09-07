@@ -52,7 +52,7 @@ class Main():
 
             sleep(1)
 
-    def set_state(state):
+    def set_state(self, state):
         self.run = state
 
 if __name__ == '__main__':
