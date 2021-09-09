@@ -86,9 +86,9 @@ if __name__ == '__main__':
     def status_handler():
         status = {}
 
-        status["camera_1"] = self.filenames[0]
-        status["camera_2"] = self.filenames[1]
-        status["camera_3"] = self.filenames[2]
+        status["camera_1"] = m.filenames[0]
+        status["camera_2"] = m.filenames[1]
+        status["camera_3"] = m.filenames[2]
 
         return jsonify(status)
 
