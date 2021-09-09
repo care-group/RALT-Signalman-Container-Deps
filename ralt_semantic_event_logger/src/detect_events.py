@@ -218,12 +218,4 @@ class DetectEvents():
             event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_ms, timestamp_formatted, step_count]
             events.append(event)
 
-        return events  Kitchen Tap Power:
-    event: tap_event(e)
-    logic:
-      predicate: alter
-      x: tap
-      y: state
-    reports: binary
-    inverted: false
-    record: all
+        return events
