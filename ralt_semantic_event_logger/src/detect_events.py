@@ -166,8 +166,8 @@ class DetectEvents():
         current = current.strip('W')
         previous = previous.strip('W')
 
-        current = int(current)
-        previous = int(previous)
+        current = int(float(current))
+        previous = int(float(previous))
         
         if current > threshold:
             semantic_state = 'true'
@@ -218,4 +218,12 @@ class DetectEvents():
             event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_ms, timestamp_formatted, step_count]
             events.append(event)
 
-        return events
+        return events  Kitchen Tap Power:
+    event: tap_event(e)
+    logic:
+      predicate: alter
+      x: tap
+      y: state
+    reports: binary
+    inverted: false
+    record: all
