@@ -180,40 +180,35 @@ class DetectEvents():
         events = []
 
         for key, value in filtered.items():
+            event_type = self.sensors[key]['event']
+            origin = key
+            raw = self.sensors[key]['raw_state']
+            timestamp_ms = self.timestamp_ms
+            timestamp_formatted = self.timestamp_formatted
+            step_count = self.step_count
+
             if self.sensors[key]['logic']['predicate'] == 'event':
                 predicate = self.sensors[key]['event']
                 x = self.sensors[key]['logic']['x']
                 y = self.sensors[key]['logic']['y']
                 predicate_xy = predicate + '(e)'
-                event_type = self.sensors[key]['event']
-                origin = key
-                raw = self.sensors[key]['raw_state']
-                timestamp_ms = self.timestamp_ms
-                timestamp_formatted = self.timestamp_formatted
-                step_count = self.step_count
             else:
-                if self.sensors[key]['logic']['y'] == 'state':
+                if self.sensors[key]['alt_predicate_when_true'] == 'true':
+                    if raw == 'true':
+                        predicate = self.sensors[key]['logic']['alt_predicate']
+                    else:
+                        predicate = self.sensors[key]['logic']['predicate']
+                else:
                     predicate = self.sensors[key]['logic']['predicate']
+
+                if self.sensors[key]['logic']['y'] == 'state':
                     x = self.sensors[key]['logic']['x']
                     y = self.sensors[key]['semantic_state']
                     predicate_xy = predicate + '(' + x + ',' + y + ')'
-                    event_type = self.sensors[key]['event']
-                    origin = key
-                    raw = self.sensors[key]['raw_state']
-                    timestamp_ms = self.timestamp_ms
-                    timestamp_formatted = self.timestamp_formatted
-                    step_count = self.step_count
                 else:
-                    predicate = self.sensors[key]['logic']['predicate'] 
                     x = self.sensors[key]['logic']['x']
                     y = self.sensors[key]['logic']['y']
                     predicate_xy = predicate + '(' + x + ',' + y + ')'
-                    event_type = self.sensors[key]['event']
-                    origin = key
-                    raw = self.sensors[key]['raw_state']
-                    timestamp_ms = self.timestamp_ms
-                    timestamp_formatted = self.timestamp_formatted
-                    step_count = self.step_count
 
             event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_ms, timestamp_formatted, step_count]
             events.append(event)

@@ -18,12 +18,14 @@ Each sensor must have an entry as follows:
 sensors:
     Sensor Label:                       // as it appears in OpenHAB
         event: EventName                // your semantic event name
+        alt_predicate_when_true: bool   // 'true' or 'false', if 'true' will use 'alt_predicate', respects inversion
         logic:                          // first-order logic description of event
-            predicate: some_relation    // custom or set to 'event' for EventName(e)
+            predicate: your_pred        // custom or set to 'event' for EventName(e)
+            alt_predicate: your_pred    // custom, only required if 'alt_predicate_when_true' is 'true'
             x: some_subject             // custom or set to 'none'
             y: some_object              // custom, set to 'none', or set to 'state' for some_relation(sensor state)
         reports: type of report         // 'binary', 'numerical', 'numerical_threshold', or 'energy'
-        inverted: true/false            // fixes mismatch in sensor logic and semantic event
+        inverted: bool                  // 'true' or 'false', fixes mismatch in sensor logic and semantic event
         record: all                     // currently, only 'all' semantic events is supported
 ```
 
