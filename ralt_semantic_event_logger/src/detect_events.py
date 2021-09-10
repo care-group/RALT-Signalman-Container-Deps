@@ -211,6 +211,10 @@ class DetectEvents():
                     predicate_xy = predicate + '(' + x + ',' + y + ')'
 
             event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_ms, timestamp_formatted, step_count]
-            events.append(event)
+
+            if self.sensors[key]['ignore_false'] != 'true':
+                events.append(event)
+            elif self.sensors[key]['ignore_false'] == 'true' and key == 'true':
+                events.append(event)
 
         return events

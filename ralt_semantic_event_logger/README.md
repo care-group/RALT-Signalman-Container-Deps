@@ -27,6 +27,7 @@ sensors:
         reports: type of report         // 'binary', 'numerical', 'numerical_threshold', or 'energy'
         inverted: bool                  // 'true' or 'false', fixes mismatch in sensor logic and semantic event
         record: all                     // currently, only 'all' semantic events is supported
+        ignore_false: bool              // 'true' or 'false', if 'true' will not record off events, respects inersion
 ```
 
 Some example configurations is as follows:
@@ -43,6 +44,7 @@ sensors:
     reports: binary
     inverted: false
     record: all
+    ignore_false: false
   Bathroom Motion Sensor 1:
     event: presence_event(e)
     alt_predicate_when_true: false
@@ -53,17 +55,19 @@ sensors:
     reports: binary
     inverted: false
     record: all
+    ignore_false: true                  // will not record when the sensor goes bag to idle state
   Kettle Pressure:
     event: kettle_event(e)
-    alt_predicate_when_true: true
-    logic:
-      predicate: take
+    alt_predicate_when_true: true       // since this is set to 'true' this will be a 'take' event
+    logic:                              // when kettle is taken off the stand, and a 'give' event
+      predicate: take                   // when placed on the stand
       alt_predicate: give
       x: user
       y: kettle
     reports: binary
     inverted: false
     record: all
+    ignore_false: false
   Kettle Power:
     event: KettleOnEvent
     logic:
@@ -71,9 +75,21 @@ sensors:
       x: Kettle
       y: state
     reports: energy
-    threshold: 1200
+    threshold: 1200                     // when threshold exceeded, state will become 'true'
     inverted: false
     record: all
+    ignore_false: false
+  Kitchen Drawer Top:
+    event: kitchen_drawer_event(e)
+    alt_predicate_when_true: false
+    logic:
+      predicate: alter
+      x: drawer
+      y: state
+    reports: binary
+    inverted: true                      // the sensor reports 'true' when closed, but we wish
+    record: all                         // to record 'true' when open
+    ignore_false: false
 ```
 
 For a full list of examples, see the default ```YAML/sensors.yaml``` file included in this repository.
