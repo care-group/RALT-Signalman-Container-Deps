@@ -193,6 +193,7 @@ class DetectEvents():
                 y = self.sensors[key]['logic']['y']
                 predicate_xy = predicate + '(e)'
             else:
+                print(raw, self.sensors[key]['alt_predicate_when_true'])
                 if self.sensors[key]['alt_predicate_when_true'] == 'true':
                     if raw == 'ON':
                         predicate = self.sensors[key]['logic']['alt_predicate']
