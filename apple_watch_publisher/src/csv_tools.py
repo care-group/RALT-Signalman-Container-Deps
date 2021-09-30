@@ -8,7 +8,7 @@ class CSVTools():
 
     def create_event_file(self):
         date_time = strftime("%Y%m%d-%H%M%S")
-        self.csv_filename = '/home/sandbox/shared/output/events_' + date_time + '.csv'
+        self.csv_filename = '/home/sandbox/shared/output/apple_watch_' + date_time + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
         print(msg)
