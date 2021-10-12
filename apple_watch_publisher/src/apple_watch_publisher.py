@@ -21,7 +21,7 @@ class AppleWatchPublisher():
 
         print('Ready.')
 
-    def loop():
+    def loop(self):
         while True:
             if self.run:
                 csvt = CSVTools()
