@@ -9,6 +9,9 @@ from openhab_helper import OpenHABHelper
 from csv_tools import CSVTools
 from detect_events import DetectEvents
 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 from std_msgs.msg import String
 
 SENSORS_CONFIG = "sensors.yaml"
@@ -19,7 +22,7 @@ class Main():
     def __init__(self, pub):
         self.id = 'main'
 
-        date_time = strftime("%Y%m%d-%H%M%S")
+        self.run = False
 
         self.pub = pub
 
@@ -39,10 +42,6 @@ class Main():
         self.load_yaml = LoadYAML()
         self.sensors, self.sensor_labels = self.load_yaml.load_file(SENSORS_CONFIG)
 
-        # Set up CSV files
-        self.csv_tools = CSVTools()
-        self.csv_tools.create_event_file()
-
         # Set up OpenHAB helper
         self.openhab_helper = OpenHABHelper(OPENHAB_URL, self.sensor_labels)
 
@@ -55,43 +54,82 @@ class Main():
 
     def loop(self):
         while(True):
-            if self.real_time:
-                start_time = time()
+            if self.run:
+                self.csv_tools = CSVTools()
+                self.csv_tools.create_event_file()
 
-            self.current_state = False
-            while not self.current_state:
-                self.current_state = self.openhab_helper.update()
-            
-            if self.step == 0:
-                self.detect_events.init_semantic_state(self.current_state)
+                while(True):
+                    if self.real_time:
+                        start_time = time()
 
-            if self.step > 0:
-                events = self.detect_events.step(self.current_state, self.previous_state, self.step)
-                if len(events) > 0:
-                    self.csv_tools.write_events(events)
-                    message = str(events)
-                    if not rospy.is_shutdown():
-                        self.pub.publish(message)
+                    self.current_state = False
+                    while not self.current_state:
+                        self.current_state = self.openhab_helper.update()
+                    
+                    if self.step == 0:
+                        self.detect_events.init_semantic_state(self.current_state)
 
-            if self.real_time:
-                end_time = time()
-                time_taken = end_time - start_time
-                delay_time = PERIODICITY - time_taken
+                    if self.step > 0:
+                        events = self.detect_events.step(self.current_state, self.previous_state, self.step)
+                        if len(events) > 0:
+                            self.csv_tools.write_events(events)
+                            message = str(events)
+                            if not rospy.is_shutdown():
+                                self.pub.publish(message)
 
-                if delay_time >= 0.0:
-                    if self.debug:
-                        msg = 'Loop time was: ' + str(time_taken) + ', sleeping for: ' + str(delay_time) + ' seconds.'
-                        print(msg)
-                    sleep(delay_time)
-                else:
-                    print('Loop took longer than the specified period. System is not able to perform in real-time at this periodicity.')
+                    if self.real_time:
+                        end_time = time()
+                        time_taken = end_time - start_time
+                        delay_time = PERIODICITY - time_taken
 
-            self.previous_state = self.current_state
-            self.step = self.step + 1
+                        if delay_time >= 0.0:
+                            if self.debug:
+                                msg = 'Loop time was: ' + str(time_taken) + ', sleeping for: ' + str(delay_time) + ' seconds.'
+                                print(msg)
+                            sleep(delay_time)
+                        else:
+                            print('Loop took longer than the specified period. System is not able to perform in real-time at this periodicity.')
+
+                    self.previous_state = self.current_state
+                    self.step = self.step + 1
+
+    def set_state(self, cmd):
+        if cmd:
+            self.run = True
+        else:
+            self.run = False
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
     pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
     
     m = Main(pub)
-    m.loop()
+
+    app = Flask(__name__)
+    CORS(app)
+
+    threading.Thread(target=lambda: m.loop()).start()
+
+    @app.route('/control', methods = ['POST'])
+    def control_handler():
+        data = request.get_data()
+        print(data)
+
+        resp = "OK"
+
+        if data == "True":
+            m.set_state(True)
+        elif data == "False":
+            m.set_state(False)
+        else:
+            resp = "Invalid state. Send either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/status', methods = ['GET'])
+    def status_handler():
+        status = "OK"
+
+        return jsonify(status)
+
+    app.run(host='0.0.0.0', port = 5007)

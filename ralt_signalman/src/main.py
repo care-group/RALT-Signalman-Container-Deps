@@ -79,9 +79,6 @@ if __name__ == '__main__':
 
     app = Flask(__name__)
     CORS(app)
-    
-    print('Delayed start. Sleeping for 10 seconds...')
-    sleep(10)
 
     threading.Thread(target=lambda: m.loop()).start()
     
@@ -122,8 +119,6 @@ if __name__ == '__main__':
         
         hsr_bag = data
 
-        #hsr_bag = main_bag.strip('.bag')
-        #hsr_bag = hsr_bag + '_hsr.bag'
         print(main_bag, hsr_bag)
 
         out_bag = main_bag.strip('.bag')
