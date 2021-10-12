@@ -74,7 +74,7 @@ if __name__ == '__main__':
     app = Flask(__name__)
     CORS(app)
 
-    threading.Thread(target=lambda: m.loop()).start()
+    threading.Thread(target=lambda: awp.loop()).start()
 
     @app.route('/control', methods = ['POST'])
     def control_handler():
