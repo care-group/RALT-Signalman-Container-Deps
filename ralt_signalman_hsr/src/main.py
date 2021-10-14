@@ -52,9 +52,9 @@ class Main():
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
-                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_hsr.bag'
+                    self.bag_name = '/home/sandbox/output/' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_hsr.bag'
                 else:
-                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_' + self.activity + '_hsr.bag'
+                    self.bag_name = '/home/sandbox/output/' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_' + self.activity + '_hsr.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]

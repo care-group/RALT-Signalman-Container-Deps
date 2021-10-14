@@ -33,13 +33,13 @@ class Main():
                 self.filenames = []
 
                 if self.activity == 'none':
-                    fn_1 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_1_' + date_time + '.mkv'
-                    fn_2 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_2_' + date_time + '.mkv'
-                    fn_3 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_3_' + date_time + '.mkv'
+                    fn_1 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_1_' + date_time + '.mkv'
+                    fn_2 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_2_' + date_time + '.mkv'
+                    fn_3 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_3_' + date_time + '.mkv'
                 else:
-                    fn_1 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_1_' + date_time + '_' + self.activity + '.mkv'
-                    fn_2 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_2_' + date_time + '_' + self.activity + '.mkv'
-                    fn_3 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_3_' + date_time + '_' + self.activity + '.mkv'
+                    fn_1 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_1_' + date_time + '_' + self.activity + '.mkv'
+                    fn_2 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_2_' + date_time + '_' + self.activity + '.mkv'
+                    fn_3 = '/home/sandbox/output/' + 'P' + str(self.participant) + '/camera_3_' + date_time + '_' + self.activity + '.mkv'
 
                 self.filenames.append(fn_1)
                 self.filenames.append(fn_2)
