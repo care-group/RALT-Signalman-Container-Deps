@@ -78,6 +78,7 @@ if __name__ == '__main__':
     @app.route('/control', methods = ['POST'])
     def control_handler():
         data = request.get_json()
+        data = data.decode("utf-8")
         
         command = data['command']
         activity = data['activity']
