@@ -27,6 +27,8 @@ class Main():
 
         self.activity = 'none'
 
+        self.participant = 999
+
         self.load_topics()
 
         print('Ready.')
@@ -51,9 +53,9 @@ class Main():
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
-                    self.bag_name = '/home/sandbox/output/data_' + date_time + '.bag'
+                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '.bag'
                 else:
-                    self.bag_name = '/home/sandbox/output/data_' + date_time + '_' + self.activity + '.bag'
+                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_' + self.activity + '.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
@@ -78,6 +80,9 @@ class Main():
     def set_activity(self, activity):
         self.activity = activity
             
+    def set_participant(self, participant):
+        self.participant = participant
+
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
 
@@ -110,6 +115,20 @@ if __name__ == '__main__':
             m.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/participant', methods = ['POST'])
+    def participant_handler():
+        data = request.get_json()
+
+        participant = data['participant']
+
+        participant = int(participant)
+
+        m.set_participant(participant)
+
+        resp = "OK"
 
         return resp
 

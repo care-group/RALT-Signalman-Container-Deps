@@ -19,6 +19,8 @@ class Main():
 
         self.activity = 'none'
 
+        self.participant = 999
+
         print('Ready.')
 
     def loop(self):
@@ -29,13 +31,13 @@ class Main():
                 self.filenames = []
 
                 if self.activity == 'none':
-                    fn_1 = '/home/sandbox/output/camera_1_' + date_time + '.mkv'
-                    fn_2 = '/home/sandbox/output/camera_2_' + date_time + '.mkv'
-                    fn_3 = '/home/sandbox/output/camera_3_' + date_time + '.mkv'
+                    fn_1 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_1_' + date_time + '.mkv'
+                    fn_2 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_2_' + date_time + '.mkv'
+                    fn_3 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_3_' + date_time + '.mkv'
                 else:
-                    fn_1 = '/home/sandbox/output/camera_1_' + date_time + '_' + self.activity + '.mkv'
-                    fn_2 = '/home/sandbox/output/camera_2_' + date_time + '_' + self.activity + '.mkv'
-                    fn_3 = '/home/sandbox/output/camera_3_' + date_time + '_' + self.activity + '.mkv'
+                    fn_1 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_1_' + date_time + '_' + self.activity + '.mkv'
+                    fn_2 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_2_' + date_time + '_' + self.activity + '.mkv'
+                    fn_3 = '/home/sandbox/output' + 'P' + str(self.participant) + '/camera_3_' + date_time + '_' + self.activity + '.mkv'
 
                 self.filenames.append(fn_1)
                 self.filenames.append(fn_2)
@@ -63,6 +65,9 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
+
+    def set_participant(self, participant):
+        self.participant = participant
 
 if __name__ == '__main__':
     m = Main()
@@ -94,6 +99,20 @@ if __name__ == '__main__':
             m.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/participant', methods = ['POST'])
+    def participant_handler():
+        data = request.get_json()
+
+        participant = data['participant']
+
+        participant = int(participant)
+
+        m.set_participant(participant)
+
+        resp = "OK"
 
         return resp
 

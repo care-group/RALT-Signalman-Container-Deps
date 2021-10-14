@@ -26,6 +26,8 @@ class Main():
 
         self.activity = 'none'
 
+        self.participant = 999
+
         print('Ready.')
 
     def load_topics(self):
@@ -48,9 +50,9 @@ class Main():
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
-                    self.bag_name = '/home/sandbox/output/data_' + date_time + '_hsr.bag'
+                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_hsr.bag'
                 else:
-                    self.bag_name = '/home/sandbox/output/data_' + date_time + '_' + self.activity + '_hsr.bag'
+                    self.bag_name = '/home/sandbox/output' + 'P' + str(self.participant) + '/ROSbag_' + date_time + '_' + self.activity + '_hsr.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
@@ -74,6 +76,9 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
+
+    def set_participant(self, participant):
+        self.participant = participant
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_signalman_hsr', disable_signals=True)).start()
@@ -104,6 +109,20 @@ if __name__ == '__main__':
             m.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/participant', methods = ['POST'])
+    def participant_handler():
+        data = request.get_json()
+
+        participant = data['participant']
+
+        participant = int(participant)
+
+        m.set_participant(participant)
+
+        resp = "OK"
 
         return resp
 

@@ -52,13 +52,15 @@ class Main():
 
         self.activity = 'none'
 
+        self.participant = 999
+
         self.logger.log_great('Ready.')
 
     def loop(self):
         while(True):
             if self.run:
                 self.csv_tools = CSVTools()
-                self.csv_tools.create_event_file(self.activity)
+                self.csv_tools.create_event_file(self.activity, self.participant)
 
                 while(True):
                     if self.real_time:
@@ -104,6 +106,9 @@ class Main():
     def set_activity(self, activity):
         self.activity = activity
 
+    def set_participant(self, participant):
+        self.participant = participant
+
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
     pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
@@ -132,6 +137,20 @@ if __name__ == '__main__':
             m.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/participant', methods = ['POST'])
+    def participant_handler():
+        data = request.get_json()
+
+        participant = data['participant']
+
+        participant = int(participant)
+
+        m.set_participant(participant)
+
+        resp = "OK"
 
         return resp
 

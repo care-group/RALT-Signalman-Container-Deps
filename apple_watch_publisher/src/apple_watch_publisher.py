@@ -21,13 +21,15 @@ class AppleWatchPublisher():
 
         self.activity = 'none'
 
+        self.participant = 999
+
         print('Ready.')
 
     def loop(self):
         while True:
             if self.run:
                 csvt = CSVTools()
-                csvt.create_event_file(self.activity)
+                csvt.create_event_file(self.activity, self.participant)
 
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -70,6 +72,9 @@ class AppleWatchPublisher():
     def set_activity(self, activity):
         self.activity = activity
 
+    def set_participant(self, participant):
+        self.participant = participant
+
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
     pub = rospy.Publisher('apple_watch_publisher', String, queue_size=10)
@@ -100,6 +105,20 @@ if __name__ == '__main__':
             awp.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        return resp
+
+    @app.route('/participant', methods = ['POST'])
+    def participant_handler():
+        data = request.get_json()
+
+        participant = data['participant']
+
+        participant = int(participant)
+
+        awp.set_participant(participant)
+
+        resp = "OK"
 
         return resp
 

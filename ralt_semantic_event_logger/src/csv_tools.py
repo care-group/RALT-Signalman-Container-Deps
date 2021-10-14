@@ -11,13 +11,13 @@ class CSVTools():
 
         self.logger.log_great('Ready.')
 
-    def create_event_file(self, activity):
+    def create_event_file(self, activity, participant):
         date_time = strftime("%Y%m%d-%H%M%S")
 
         if activity == 'none':
-            self.csv_filename = '/home/sandbox/output/events_' + date_time + '.csv'
+            self.csv_filename = '/home/sandbox/output' + 'P' + str(participant) + '/events_' + date_time + '.csv'
         else:
-            self.csv_filename = '/home/sandbox/output/events_' + date_time + '_' + activity + '.csv'
+            self.csv_filename = '/home/sandbox/output' + 'P' + str(participant) + '/events_' + date_time + '_' + activity + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
         self.logger.log(msg)

@@ -6,13 +6,13 @@ class CSVTools():
     def __init__(self):
         self.id = 'csv_tools'
 
-    def create_event_file(self, activity):
+    def create_event_file(self, activity, participant):
         date_time = strftime("%Y%m%d-%H%M%S")
 
         if activity == 'none':
-            self.csv_filename = '/home/sandbox/output/apple_watch_' + date_time + '.csv'
+            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/apple_watch_' + date_time + '.csv'
         else:
-            self.csv_filename = '/home/sandbox/output/apple_watch_' + date_time + '_' + activity + '.csv'
+            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/apple_watch_' + date_time + '_' + activity + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
         print(msg)
