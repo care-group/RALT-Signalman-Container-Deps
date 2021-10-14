@@ -115,6 +115,7 @@ if __name__ == '__main__':
 
     threading.Thread(target=lambda: m.loop()).start()
 
+    @app.route('/control', methods = ['POST'])
     def control_handler():
         data = request.get_json()
         
