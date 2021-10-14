@@ -122,8 +122,6 @@ if __name__ == '__main__':
         command = data['command']
         activity = data['activity']
 
-        print(command, activity)
-
         resp = "OK"
 
         m.set_activity(activity)
