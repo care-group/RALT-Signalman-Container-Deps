@@ -9,6 +9,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from csv_tools import CSVTools
+from check_create_folder_tool import FolderCheckCreate
 
 from std_msgs.msg import String
 
@@ -74,6 +75,8 @@ class AppleWatchPublisher():
 
     def set_participant(self, participant):
         self.participant = participant
+        fcc = FolderCheckCreate()
+        fcc.run(self.participant)
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()

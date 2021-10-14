@@ -6,10 +6,12 @@ import subprocess
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from std_msgs import msg
 
+from std_msgs import msg
 from std_msgs.msg import String, Int32
 from sensor_msgs.msg import Image, CompressedImage
+
+from check_create_folder_tool import FolderCheckCreate
 
 class Main():
     def __init__(self):
@@ -79,6 +81,8 @@ class Main():
 
     def set_participant(self, participant):
         self.participant = participant
+        fcc = FolderCheckCreate()
+        fcc.run(self.participant)
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_signalman_hsr', disable_signals=True)).start()

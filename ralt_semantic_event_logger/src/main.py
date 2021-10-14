@@ -12,6 +12,8 @@ from detect_events import DetectEvents
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from check_create_folder_tool import FolderCheckCreate
+
 from std_msgs.msg import String
 
 SENSORS_CONFIG = "sensors.yaml"
@@ -108,6 +110,8 @@ class Main():
 
     def set_participant(self, participant):
         self.participant = participant
+        fcc = FolderCheckCreate()
+        fcc.run(self.participant)
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
