@@ -50,13 +50,15 @@ class Main():
 
         self.step = 0
 
+        self.activity = 'none'
+
         self.logger.log_great('Ready.')
 
     def loop(self):
         while(True):
             if self.run:
                 self.csv_tools = CSVTools()
-                self.csv_tools.create_event_file()
+                self.csv_tools.create_event_file(self.activity)
 
                 while(True):
                     if self.real_time:
@@ -99,6 +101,9 @@ class Main():
         else:
             self.run = False
 
+    def set_activity(self, activity):
+        self.activity = activity
+
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
     pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
@@ -110,19 +115,24 @@ if __name__ == '__main__':
 
     threading.Thread(target=lambda: m.loop()).start()
 
-    @app.route('/control', methods = ['POST'])
     def control_handler():
-        data = request.get_data()
-        print(data)
+        data = request.get_json()
+        
+        command = data['command']
+        activity = data['activity']
+
+        print(command, activity)
 
         resp = "OK"
 
-        if data == "True":
+        if command == "True":
             m.set_state(True)
-        elif data == "False":
+        elif command == "False":
             m.set_state(False)
         else:
-            resp = "Invalid state. Send either 'True' or 'False'."
+            resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        m.set_activity(activity)
 
         return resp
 

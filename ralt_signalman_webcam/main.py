@@ -17,6 +17,8 @@ class Main():
 
         self.run = False
 
+        self.activity = 'none'
+
         print('Ready.')
 
     def loop(self):
@@ -26,9 +28,14 @@ class Main():
 
                 self.filenames = []
 
-                fn_1 = '/home/sandbox/shared/output/camera_1_' + date_time + '.mkv'
-                fn_2 = '/home/sandbox/shared/output/camera_2_' + date_time + '.mkv'
-                fn_3 = '/home/sandbox/shared/output/camera_3_' + date_time + '.mkv'
+                if self.activity == 'none':
+                    fn_1 = '/home/sandbox/shared/output/camera_1_' + date_time + '.mkv'
+                    fn_2 = '/home/sandbox/shared/output/camera_2_' + date_time + '.mkv'
+                    fn_3 = '/home/sandbox/shared/output/camera_3_' + date_time + '.mkv'
+                else:
+                    fn_1 = '/home/sandbox/shared/output/camera_1_' + date_time + '_' + self.activity + '.mkv'
+                    fn_2 = '/home/sandbox/shared/output/camera_2_' + date_time + '_' + self.activity + '.mkv'
+                    fn_3 = '/home/sandbox/shared/output/camera_3_' + date_time + '_' + self.activity + '.mkv'
 
                 self.filenames.append(fn_1)
                 self.filenames.append(fn_2)
@@ -54,6 +61,9 @@ class Main():
     def set_state(self, state):
         self.run = state
 
+    def set_activity(self, activity):
+        self.activity = activity
+
 if __name__ == '__main__':
     m = Main()
 
@@ -64,21 +74,26 @@ if __name__ == '__main__':
     sleep(1)
 
     threading.Thread(target=lambda: m.loop()).start()
-    
+
     @app.route('/control', methods = ['POST'])
     def control_handler():
-        data = request.get_data()
-        data = data.decode("utf-8") 
-        print(data)
+        data = request.get_json()
+        
+        command = data['command']
+        activity = data['activity']
+
+        print(command, activity)
 
         resp = "OK"
 
-        if data == "True":
+        if command == "True":
             m.set_state(True)
-        elif data == "False":
+        elif command == "False":
             m.set_state(False)
         else:
-            resp = "Invalid control message. Either True or False to start/stop recording."
+            resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        m.set_activity(activity)
 
         return resp
 

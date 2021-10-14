@@ -24,6 +24,8 @@ class Main():
 
         self.load_topics()
 
+        self.activity = 'none'
+
         print('Ready.')
 
     def load_topics(self):
@@ -44,7 +46,11 @@ class Main():
         while(True):
             if self.run:
                 date_time = strftime("%Y%m%d-%H%M%S")
-                self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '_hsr.bag'
+
+                if self.activity == 'none':
+                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '_hsr.bag'
+                else:
+                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '_' + self.activity + '_hsr.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
@@ -66,6 +72,9 @@ class Main():
         else:
             self.run = False
 
+    def set_activity(self, activity):
+        self.activity = activity
+
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_signalman_hsr', disable_signals=True)).start()
 
@@ -78,17 +87,23 @@ if __name__ == '__main__':
     
     @app.route('/control', methods = ['POST'])
     def control_handler():
-        data = request.get_data()
-        print(data)
+        data = request.get_json()
+        
+        command = data['command']
+        activity = data['activity']
+
+        print(command, activity)
 
         resp = "OK"
 
-        if data == "True":
+        if command == "True":
             m.set_state(True)
-        elif data == "False":
+        elif command == "False":
             m.set_state(False)
         else:
-            resp = "Invalid state. Send either 'True' or 'False'."
+            resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        m.set_activity(activity)
 
         return resp
 

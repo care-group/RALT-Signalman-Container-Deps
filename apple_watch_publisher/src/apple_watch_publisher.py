@@ -19,13 +19,15 @@ class AppleWatchPublisher():
     def __init__(self):
         self.run = False
 
+        self.activity = 'none'
+
         print('Ready.')
 
     def loop(self):
         while True:
             if self.run:
                 csvt = CSVTools()
-                csvt.create_event_file()
+                csvt.create_event_file(self.activity)
 
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -65,6 +67,9 @@ class AppleWatchPublisher():
         else:
             self.run = False
 
+    def set_activity(self, activity):
+        self.activity = activity
+
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('aw_pub', disable_signals=True)).start()
     pub = rospy.Publisher('apple_watch_publisher', String, queue_size=10)
@@ -78,17 +83,23 @@ if __name__ == '__main__':
 
     @app.route('/control', methods = ['POST'])
     def control_handler():
-        data = request.get_data()
-        print(data)
+        data = request.get_json()
+        
+        command = data['command']
+        activity = data['activity']
+
+        print(command, activity)
 
         resp = "OK"
 
-        if data == "True":
-            m.set_state(True)
-        elif data == "False":
-            m.set_state(False)
+        if command == "True":
+            awp.set_state(True)
+        elif command == "False":
+            awp.set_state(False)
         else:
-            resp = "Invalid state. Send either 'True' or 'False'."
+            resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        awp.set_activity(activity)
 
         return resp
 
