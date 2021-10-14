@@ -25,7 +25,9 @@ class Main():
         self.bag_name = 'No current or previous bag has been saved.'
         self.merged_bag_name = 'No bag files have been merged.'
 
-        self.load_topics()
+        self.activity = 'none'
+
+        # self.load_topics()
 
         print('Ready.')
 
@@ -47,7 +49,11 @@ class Main():
         while(True):
             if self.run:
                 date_time = strftime("%Y%m%d-%H%M%S")
-                self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '.bag'
+
+                if self.activity == 'none':
+                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '.bag'
+                else:
+                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '_' + self.activity + '.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
@@ -68,6 +74,9 @@ class Main():
             self.run = True
         else:
             self.run = False
+
+    def set_activity(self, activity):
+        self.activity = activity
             
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
@@ -84,17 +93,23 @@ if __name__ == '__main__':
     
     @app.route('/control', methods = ['POST'])
     def control_handler():
-        data = request.get_data()
-        print(data)
+        data = request.get_json()
+        
+        command = data['command']
+        activity = data['activity']
+
+        print(command, activity)
 
         resp = "OK"
 
-        if data == "True":
+        if command == "True":
             m.set_state(True)
-        elif data == "False":
+        elif command == "False":
             m.set_state(False)
         else:
-            resp = "Invalid state. Send either 'True' or 'False'."
+            resp = "Invalid state. Send command to either 'True' or 'False'."
+
+        m.set_activity(activity)
 
         return resp
 
