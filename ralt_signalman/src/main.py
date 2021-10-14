@@ -102,14 +102,14 @@ if __name__ == '__main__':
 
         resp = "OK"
 
+        m.set_activity(activity)
+
         if command == "True":
             m.set_state(True)
         elif command == "False":
             m.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
-
-        m.set_activity(activity)
 
         return resp
 

@@ -90,6 +90,8 @@ if __name__ == '__main__':
 
         print(command, activity)
 
+        awp.set_activity(activity)
+
         resp = "OK"
 
         if command == "True":
@@ -98,8 +100,6 @@ if __name__ == '__main__':
             awp.set_state(False)
         else:
             resp = "Invalid state. Send command to either 'True' or 'False'."
-
-        awp.set_activity(activity)
 
         return resp
 
