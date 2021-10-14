@@ -32,7 +32,7 @@ class Main():
         print('Ready.')
 
     def load_topics(self):
-        with open('/home/sandbox/shared/input/topics.txt') as f:
+        with open('/home/sandbox/config/topics.txt') as f:
             lines = f.readlines()
 
             lines_clean = []
@@ -51,9 +51,9 @@ class Main():
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
-                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '.bag'
+                    self.bag_name = '/home/sandbox/output/data_' + date_time + '.bag'
                 else:
-                    self.bag_name = '/home/sandbox/shared/output/data_' + date_time + '_' + self.activity + '.bag'
+                    self.bag_name = '/home/sandbox/output/data_' + date_time + '_' + self.activity + '.bag'
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]

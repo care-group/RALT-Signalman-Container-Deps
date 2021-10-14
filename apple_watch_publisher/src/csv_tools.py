@@ -10,9 +10,9 @@ class CSVTools():
         date_time = strftime("%Y%m%d-%H%M%S")
 
         if activity == 'none':
-            self.csv_filename = '/home/sandbox/shared/output/apple_watch_' + date_time + '.csv'
+            self.csv_filename = '/home/sandbox/output/apple_watch_' + date_time + '.csv'
         else:
-            self.csv_filename = '/home/sandbox/shared/output/apple_watch_' + date_time + '_' + activity + '.csv'
+            self.csv_filename = '/home/sandbox/output/apple_watch_' + date_time + '_' + activity + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
         print(msg)

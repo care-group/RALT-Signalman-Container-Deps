@@ -15,7 +15,7 @@ class LoadYAML():
         self.logger.log_great('Ready.')
 
     def load_file(self, file):
-        path = "/home/sandbox/shared/input/" + file
+        path = "/home/sandbox/config/" + file
         stream = open(path, 'r')
         dictionary = yaml.load(stream, Loader=FullLoader)
 

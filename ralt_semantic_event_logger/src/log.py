@@ -8,7 +8,7 @@ class Log(object):
         print(Fore.YELLOW + '* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *')
         print()
         print(Style.BRIGHT + ' RALT Semantic Event Logger' + Style.RESET_ALL + Fore.YELLOW)
-        print(' https://github.com/care-group/RALT-Semantic-Event-Logger')
+        print(' https://github.com/care-group/RALT-Signalman-Docker-Files')
         print()
         print(' Developer: Ronnie Smith')
         print(' Email:     ronnie.smith@ed.ac.uk')
