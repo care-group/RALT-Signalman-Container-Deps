@@ -27,7 +27,7 @@ class Main():
 
         self.activity = 'none'
 
-        # self.load_topics()
+        self.load_topics()
 
         print('Ready.')
 
