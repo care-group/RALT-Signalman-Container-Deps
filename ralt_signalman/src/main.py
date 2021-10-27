@@ -32,6 +32,8 @@ class Main():
 
         self.load_topics()
 
+        self.act_pub = rospy.Publisher('/activity_label', String, queue_size=10)
+
         print('Ready.')
 
     def load_topics(self):
@@ -66,6 +68,7 @@ class Main():
                     self.p = subprocess.Popen(cmd)
 
                     while not rospy.core.is_shutdown() and self.run:
+                        self.act_pub(self.activity)
                         rospy.rostime.wallsleep(0.5)
 
                 self.p.terminate()            
@@ -145,6 +148,18 @@ if __name__ == '__main__':
         status["merged_bagfile"] = m.merged_bag_name
 
         return jsonify(status)
+
+    @app.route('/update', methods = ['POST'])
+    def update_handler():
+        data = request.get_json()
+
+        activity = data['activity']
+
+        resp = "OK"
+
+        m.set_activity(activity)
+
+        return resp
 
     @app.route('/merge', methods = ['POST'])
     def merge_handler():
