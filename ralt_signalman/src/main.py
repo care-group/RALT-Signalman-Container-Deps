@@ -68,7 +68,7 @@ class Main():
                     self.p = subprocess.Popen(cmd)
 
                     while not rospy.core.is_shutdown() and self.run:
-                        self.act_pub(self.activity)
+                        self.act_pub.publish(self.activity)
                         rospy.rostime.wallsleep(0.5)
 
                 self.p.terminate()            
