@@ -15,18 +15,20 @@ from flask_cors import CORS
 from check_create_folder_tool import FolderCheckCreate
 
 from std_msgs.msg import String
+from ralt_semantic_event_logger.msg import simple_evidence
 
 SENSORS_CONFIG = "sensors.yaml"
 PERIODICITY = 1.0
 OPENHAB_URL = "http://0.0.0.0:8080/rest/items"
 
 class Main():
-    def __init__(self, pub):
+    def __init__(self, pub_full, pub_simple):
         self.id = 'main'
 
         self.run = False
 
-        self.pub = pub
+        self.pub_full = pub_full
+        self.pub_simple = pub_simple
 
         self.logger = Log(self.id)
         self.logger.startup_msg()
@@ -79,9 +81,19 @@ class Main():
                         events = self.detect_events.step(self.current_state, self.previous_state, self.step)
                         if len(events) > 0:
                             self.csv_tools.write_events(events)
-                            message = str(events)
+                            msg = str(events)
                             if not rospy.is_shutdown():
-                                self.pub.publish(message)
+                                self.pub_full.publish(msg)
+
+                            for event in events:
+                                evidence = event[4]
+                                etype = 'event'
+
+                                msg = simple_evidence()
+                                msg.evidence = evidence
+                                msg.etype = etype
+
+                                self.pub_simple.publish(msg)
 
                     if self.real_time:
                         end_time = time()
@@ -115,9 +127,11 @@ class Main():
 
 if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
-    pub = rospy.Publisher('ralt_semantic_event_publisher', String, queue_size=10)
+
+    pub_full = rospy.Publisher('ralt_semantic_event_publisher/full', String, queue_size=10)
+    pub_simple = rospy.Publisher('ralt_semantic_event_publisher/simple', simple_evidence, queue_size=10)
     
-    m = Main(pub)
+    m = Main(pub_full, pub_simple)
 
     app = Flask(__name__)
     CORS(app)
