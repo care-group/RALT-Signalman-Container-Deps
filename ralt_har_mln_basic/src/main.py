@@ -180,5 +180,11 @@ if __name__ == '__main__':
         resp = m.delete(evidence, etype)
 
         return resp
+    
+    @app.route('/status', methods = ['GET'])
+    def status_handler():
+        status = "OK"
+
+        return jsonify(status)
 
     app.run(host='0.0.0.0', port = 5010)
