@@ -16,7 +16,7 @@ from ralt_har_mln_basic.msg import simple_evidence
 
 class Main():
     def __init__(self):
-        self.sub = rospy.Subscriber('/ralt_semantic_event_logger/simple', simple_evidence, callback=self.evidence_callback)
+        self.sub = rospy.Subscriber('/ralt_semantic_event_publisher/simple', simple_evidence, callback=self.evidence_callback)
 
         rospack = rospkg.RosPack()
         rel_path = rospack.get_path('ralt_har_mln_basic')
