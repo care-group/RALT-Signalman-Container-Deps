@@ -85,15 +85,15 @@ class Main():
                             if not rospy.is_shutdown():
                                 self.pub_full.publish(msg)
 
-                            for event in events:
-                                evidence = event[4]
-                                etype = 'event'
+                                for event in events:
+                                    evidence = event[4]
+                                    etype = 'event'
 
-                                msg = simple_evidence()
-                                msg.evidence = evidence
-                                msg.etype = etype
+                                    msg = simple_evidence()
+                                    msg.evidence = evidence
+                                    msg.etype = etype
 
-                                self.pub_simple.publish(msg)
+                                    self.pub_simple.publish(msg)
 
                     if self.real_time:
                         end_time = time()
@@ -110,12 +110,40 @@ class Main():
 
                     self.previous_state = self.current_state
                     self.step = self.step + 1
+            else:
+                self.current_state = False
+                while not self.current_state:
+                    self.current_state = self.openhab_helper.update()
+
+                if self.step == 0:
+                    self.detect_events.init_semantic_state(self.current_state)
+
+                if self.step > 0:
+                    events = self.detect_events.step(self.current_state, self.previous_state, self.step)
+                    if len(events) > 0:
+                        self.csv_tools.write_events(events)
+                        msg = str(events)
+                        if not rospy.is_shutdown():
+                            for event in events:
+                                evidence = event[4]
+                                etype = 'event'
+
+                                msg = simple_evidence()
+                                msg.evidence = evidence
+                                msg.etype = etype
+
+                                self.pub_simple.publish(msg)
+                            
+                    self.previous_state = self.current_state
+                    self.step = self.step + 1
 
     def set_state(self, cmd):
         if cmd:
             self.run = True
+            self.step = 0
         else:
             self.run = False
+            self.step = 0
 
     def set_activity(self, activity):
         self.activity = activity
