@@ -50,14 +50,20 @@ class Main():
                 rospy.rostime.wallsleep(0.5)
             
     def evidence_callback(self, msg):
-        print('Received new evidence.')
         if msg.etype == 'event':
             if msg.evidence in self.events:
                 self.add(msg.evidence, msg.etype)
+                print('Saving evidence:', msg.evidence, msg.etype)
+            else:
+                print('Rejecting evidence, not in ground atoms.')
         elif msg.etype == 'object':
             if msg.evidence in self.objects:
                 self.add(msg.evidence, msg.etype)
+                print('Saving evidence:', msg.evidence, msg.etype)
+            else:
+                print('Rejecting evidence, not in ground atoms.')
         else:
+            print('Rejecting evidence, not a valid type.')
             pass # there is nothing we can do here to return an error really
 
     # API Methods
