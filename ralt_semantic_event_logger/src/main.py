@@ -71,7 +71,7 @@ class Main():
                 self.csv_tools = CSVTools()
                 self.csv_tools.create_event_file(self.activity, self.participant)
 
-                while(True):
+                while(self.run):
                     if self.real_time:
                         start_time = time()
 
