@@ -50,16 +50,15 @@ class Main():
                 rospy.rostime.wallsleep(0.5)
             
     def evidence_callback(self, msg):
+        print('Received evidence:', msg.evidence, msg.etype)
         if msg.etype == 'event':
             if msg.evidence in self.events:
                 self.add(msg.evidence, msg.etype)
-                print('Saving evidence:', msg.evidence, msg.etype)
             else:
                 print('Rejecting evidence, not in ground atoms.')
         elif msg.etype == 'object':
             if msg.evidence in self.objects:
                 self.add(msg.evidence, msg.etype)
-                print('Saving evidence:', msg.evidence, msg.etype)
             else:
                 print('Rejecting evidence, not in ground atoms.')
         else:
