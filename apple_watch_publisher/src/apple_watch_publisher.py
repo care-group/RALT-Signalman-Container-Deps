@@ -29,6 +29,9 @@ class AppleWatchPublisher():
     def loop(self):
         while True:
             if self.run:
+                fcc = FolderCheckCreate()
+                fcc.run(self.participant)
+                
                 csvt = CSVTools()
                 csvt.create_event_file(self.activity, self.participant)
 
