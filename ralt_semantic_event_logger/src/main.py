@@ -65,6 +65,9 @@ class Main():
             if self.run:
                 print('Publish and log mode...')
                 
+                fcc = FolderCheckCreate()
+                fcc.run(self.participant)
+                
                 self.csv_tools = CSVTools()
                 self.csv_tools.create_event_file(self.activity, self.participant)
 
