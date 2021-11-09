@@ -121,7 +121,6 @@ class Main():
                 if self.step > 0:
                     events = self.detect_events.step(self.current_state, self.previous_state, self.step)
                     if len(events) > 0:
-                        self.csv_tools.write_events(events)
                         msg = str(events)
                         if not rospy.is_shutdown():
                             for event in events:
