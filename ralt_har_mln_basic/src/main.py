@@ -24,13 +24,16 @@ class Main():
         self.mln = MLN.load(files=path, grammar='StandardGrammar', logic='FuzzyLogic')
         self.db = Database(self.mln)
 
+        self.load_events_objects()
+
+    # Init. Methods
+    
+    def load_events_objects(self):
         self.events = ['Kettle', 'Tap', 'Oven', 'Fridge', 'DinnerwareCupboard', 'DrinkwareCupboard', 'FoodCupboard', 'CutleryDrawer', 'Bin']
         self.objects = ['Plate', 'Bowl', 'JuiceCarton']
         self.classes = ['PrepareColdMeal', 'PrepareHotDrink', 'PrepareHotMeal', 'PrepareColdDrink', 'WashingUp']
 
         self.init_objects()
-
-    # Init. Methods
 
     def init_objects(self):
         for obj in self.objects:
@@ -62,6 +65,7 @@ class Main():
     def reset(self):
         del self.db # unsafe behaviour, subscriber callback may write to db between these two function calls
         self.db = Database(self.mln)
+        self.load_events_objects()
 
     def reason(self):
         result = MLNQuery(mln=self.mln, db=self.db, method='EnumerationAsk').run()
