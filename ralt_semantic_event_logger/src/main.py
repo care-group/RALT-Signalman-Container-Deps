@@ -111,7 +111,7 @@ class Main():
                     self.previous_state = self.current_state
                     self.step = self.step + 1
             else:
-                while(True:
+                while(True):
                     self.current_state = False
                     while not self.current_state:
                         self.current_state = self.openhab_helper.update()
@@ -133,6 +133,8 @@ class Main():
                                     msg = simple_evidence()
                                     msg.evidence = evidence
                                     msg.etype = etype
+                                    
+                                    print('Sending to /ralt_semantic_event_publisher/simple', evidence, etype)
 
                                     self.pub_simple.publish(msg)
 
