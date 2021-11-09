@@ -29,7 +29,7 @@ class Main():
     # Init. Methods
     
     def load_events_objects(self):
-        self.events = ['Kettle', 'Tap', 'Oven', 'Fridge', 'DinnerwareCupboard', 'DrinkwareCupboard', 'FoodCupboard', 'CutleryDrawer', 'Bin']
+        self.events = ['Kettle', 'Tap', 'Oven', 'Fridge', 'DinnerwareCabinet', 'DrinkwareCabinet', 'FoodCabinet', 'CutleryDrawer', 'Bin']
         self.objects = ['Plate', 'Bowl', 'JuiceCarton']
         self.classes = ['PrepareColdMeal', 'PrepareHotDrink', 'PrepareHotMeal', 'PrepareColdDrink', 'WashingUp']
 
