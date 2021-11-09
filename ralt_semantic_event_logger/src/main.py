@@ -144,8 +144,8 @@ class Main():
 
                                     self.pub_simple.publish(msg)
 
-                        self.previous_state = self.current_state
-                        self.step = self.step + 1
+                    self.previous_state = self.current_state
+                    self.step = self.step + 1
 
     def set_state(self, cmd):
         if cmd:
