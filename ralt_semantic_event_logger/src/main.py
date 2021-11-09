@@ -81,11 +81,11 @@ class Main():
                         events = self.detect_events.step(self.current_state, self.previous_state, self.step)
                         if len(events) > 0:
                             self.csv_tools.write_events(events)
-                            msg = str(events)
                             if not rospy.is_shutdown():
-                                self.pub_full.publish(msg)
-
                                 for event in events:
+                                    msg = str(event)
+                                    self.pub_full.publish(msg)
+                                    
                                     evidence = event[4]
                                     etype = 'event'
 
@@ -111,30 +111,33 @@ class Main():
                     self.previous_state = self.current_state
                     self.step = self.step + 1
             else:
-                self.current_state = False
-                while not self.current_state:
-                    self.current_state = self.openhab_helper.update()
+                while(True:
+                    self.current_state = False
+                    while not self.current_state:
+                        self.current_state = self.openhab_helper.update()
 
-                if self.step == 0:
-                    self.detect_events.init_semantic_state(self.current_state)
+                    if self.step == 0:
+                        self.detect_events.init_semantic_state(self.current_state)
 
-                if self.step > 0:
-                    events = self.detect_events.step(self.current_state, self.previous_state, self.step)
-                    if len(events) > 0:
-                        msg = str(events)
-                        if not rospy.is_shutdown():
-                            for event in events:
-                                evidence = event[4]
-                                etype = 'event'
+                    if self.step > 0:
+                        events = self.detect_events.step(self.current_state, self.previous_state, self.step)
+                        if len(events) > 0:
+                            if not rospy.is_shutdown():
+                                for event in events:
+                                    msg = str(event)
+                                    self.pub_full.publish(msg)
 
-                                msg = simple_evidence()
-                                msg.evidence = evidence
-                                msg.etype = etype
+                                    evidence = event[4]
+                                    etype = 'event'
 
-                                self.pub_simple.publish(msg)
-                            
-                    self.previous_state = self.current_state
-                    self.step = self.step + 1
+                                    msg = simple_evidence()
+                                    msg.evidence = evidence
+                                    msg.etype = etype
+
+                                    self.pub_simple.publish(msg)
+
+                        self.previous_state = self.current_state
+                        self.step = self.step + 1
 
     def set_state(self, cmd):
         if cmd:
