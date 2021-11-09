@@ -114,7 +114,7 @@ class Main():
                     self.step = self.step + 1
             else:
                 print('Publish only mode...')
-                while(True):
+                while(not self.run):
                     self.current_state = False
                     while not self.current_state:
                         self.current_state = self.openhab_helper.update()
