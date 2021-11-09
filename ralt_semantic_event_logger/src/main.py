@@ -63,6 +63,8 @@ class Main():
     def loop(self):
         while(True):
             if self.run:
+                print('Publish and log mode...')
+                
                 self.csv_tools = CSVTools()
                 self.csv_tools.create_event_file(self.activity, self.participant)
 
@@ -111,6 +113,7 @@ class Main():
                     self.previous_state = self.current_state
                     self.step = self.step + 1
             else:
+                print('Publish only mode...')
                 while(True):
                     self.current_state = False
                     while not self.current_state:
