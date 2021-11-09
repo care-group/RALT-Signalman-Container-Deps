@@ -109,16 +109,16 @@ class DetectEvents():
         semantic_state = ''
 
         if not inverted:
-            if current == 'ON':
+            if current == 'ON' or current == 'CLOSED':
                 semantic_state = 'true'
-            elif current == 'OFF':
+            elif current == 'OFF' or current == 'OPEN':
                 semantic_state = 'false'
             else:
                 semantic_state = 'undefined'
         else:
-            if current == 'ON':
+            if current == 'ON' or current == 'CLOSED':
                 semantic_state = 'false'
-            elif current == 'OFF':
+            elif current == 'OFF' or current == 'OPEN':
                 semantic_state = 'true'
             else:
                 semantic_state = 'undefined'
