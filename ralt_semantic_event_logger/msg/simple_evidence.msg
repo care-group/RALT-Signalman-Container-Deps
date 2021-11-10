@@ -1,2 +1,0 @@
-string evidence
-string etype

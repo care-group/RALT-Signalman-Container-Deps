@@ -15,7 +15,7 @@ from flask_cors import CORS
 from check_create_folder_tool import FolderCheckCreate
 
 from std_msgs.msg import String
-from ralt_semantic_event_logger.msg import simple_evidence
+from ralt_signalman_messages.msg import har_simple_evidence
 
 SENSORS_CONFIG = "sensors.yaml"
 PERIODICITY = 1.0
@@ -94,7 +94,7 @@ class Main():
                                     evidence = event[4]
                                     etype = 'event'
 
-                                    msg = simple_evidence()
+                                    msg = har_simple_evidence()
                                     msg.evidence = evidence
                                     msg.etype = etype
 
@@ -136,7 +136,7 @@ class Main():
                                     evidence = event[4]
                                     etype = 'event'
 
-                                    msg = simple_evidence()
+                                    msg = har_simple_evidence()
                                     msg.evidence = evidence
                                     msg.etype = etype
                                     
@@ -167,7 +167,7 @@ if __name__ == '__main__':
     threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
 
     pub_full = rospy.Publisher('ralt_semantic_event_publisher/full', String, queue_size=10)
-    pub_simple = rospy.Publisher('ralt_semantic_event_publisher/simple', simple_evidence, queue_size=10)
+    pub_simple = rospy.Publisher('ralt_semantic_event_publisher/simple', har_simple_evidence, queue_size=10)
     
     m = Main(pub_full, pub_simple)
 
