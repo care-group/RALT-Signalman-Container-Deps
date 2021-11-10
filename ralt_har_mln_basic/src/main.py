@@ -12,7 +12,7 @@ from flask_cors import CORS
 from std_msgs import msg
 from std_msgs.msg import String
 
-from ralt_har_mln_basic.msg import simple_evidence
+from ralt_signalman_messages.msg import har_simple_evidence
 
 class Main():
     def __init__(self):
