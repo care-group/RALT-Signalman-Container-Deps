@@ -50,6 +50,8 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   har_simple_evidence.msg
+  har_reset.msg
+  har_evidence_list.msg
 )
 
 ## Generate services in the 'srv' folder

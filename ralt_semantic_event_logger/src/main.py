@@ -97,6 +97,7 @@ class Main():
                                     msg = har_simple_evidence()
                                     msg.evidence = evidence
                                     msg.etype = etype
+                                    msg.cmd = 'add'
 
                                     self.pub_simple.publish(msg)
 
@@ -139,6 +140,7 @@ class Main():
                                     msg = har_simple_evidence()
                                     msg.evidence = evidence
                                     msg.etype = etype
+                                    msg.cmd = 'add'
                                     
                                     print('Sending to /ralt_semantic_event_publisher/simple', evidence, etype)
 

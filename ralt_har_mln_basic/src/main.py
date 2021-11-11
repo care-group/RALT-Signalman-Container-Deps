@@ -13,10 +13,18 @@ from std_msgs import msg
 from std_msgs.msg import String
 
 from ralt_signalman_messages.msg import har_simple_evidence
+from ralt_signalman_messages.msg import har_reset
+from ralt_signalman_messages.msg import har_evidence_list
 
 class Main():
     def __init__(self):
-        self.sub = rospy.Subscriber('/ralt_semantic_event_publisher/simple', har_simple_evidence, callback=self.evidence_callback)
+        rospy.init_node('ralt_har_mln_basic', disable_signals=True)
+
+        self.sub_sel_evidence = rospy.Subscriber('/ralt_semantic_event_publisher/simple', har_simple_evidence, callback=self.ros_evidence_callback)
+        self.sub_ros_evidence = rospy.Subscriber('/ralt_har_mln/add_delete', har_simple_evidence, callback=self.ros_evidence_callback)
+        self.sub_ros_reset = rospy.Subscriber('/ralt_har_mln/reset', har_reset, callback=self.ros_reset_callback)
+
+        self.pub_ros_evidence = rospy.Publisher('/ralt_har_mln/evidence', har_evidence_list, queue_size=10)
 
         rospack = rospkg.RosPack()
         rel_path = rospack.get_path('ralt_har_mln_basic')
@@ -47,23 +55,45 @@ class Main():
         while(True):
             while not rospy.core.is_shutdown():
                 self.decay()
+                self.ros_publish()
                 rospy.rostime.wallsleep(0.5)
             
-    def evidence_callback(self, msg):
-        print('Received evidence:', msg.evidence, msg.etype)
-        if msg.etype == 'event':
-            if msg.evidence in self.events:
-                self.add(msg.evidence, msg.etype)
-            else:
-                print('Rejecting evidence, not in ground atoms.')
-        elif msg.etype == 'object':
-            if msg.evidence in self.objects:
-                self.add(msg.evidence, msg.etype)
-            else:
-                print('Rejecting evidence, not in ground atoms.')
+    def ros_evidence_callback(self, msg):
+        print('[ROS] Received evidence:', msg.evidence, msg.etype)
+        if msg.cmd == 'add':
+            self.add(msg.evidence, msg.etype)
+        elif msg.cmd == 'delete':
+            self.delete(msg.evidence, msg.etype)
         else:
-            print('Rejecting evidence, not a valid type.')
-            pass # there is nothing we can do here to return an error really
+            print('[ROS] Invalid command in ROS evidence topic.')
+        
+    def ros_reset_callback(self, msg):
+        if msg.reset == 'reset':
+            print('[ROS] Received reset command.')
+            self.reset()
+
+    def ros_publish(self):
+        msg = har_evidence_list()
+
+        e_preds, e_confs = self.evidence()
+
+        for i in range(0, len(e_confs)):
+            e_confs[i] = str(e_confs[i])
+
+        list_str_preds = ''
+        list_str_confs = ''
+        for i in range(0, len(e_preds)):
+            if i < len(e_preds) - 1:
+                list_str_preds = list_str_preds + e_preds[i] + ','
+                list_str_confs = list_str_confs + e_confs[i] + ','
+            else:
+                list_str_preds = list_str_preds + e_preds[i]
+                list_str_confs = list_str_confs + e_confs[i]
+
+        msg.evidence_preds = list_str_preds
+        msg.evidence_confs = list_str_confs
+
+        self.pub_ros_evidence.publish(msg)
 
     # API Methods
     
@@ -71,6 +101,18 @@ class Main():
         del self.db # unsafe behaviour, subscriber callback may write to db between these two function calls
         self.db = Database(self.mln)
         self.load_events_objects()
+        print('[API', 'Reset.')
+
+    def evidence(self):
+        e_preds = []
+        e_confs = []
+
+        for e in self.db:
+            e_preds.append(e[0])
+            e_confs.append(e[1])
+
+        print('[API]', e_preds, e_confs)
+        return e_preds, e_confs
 
     def reason(self):
         result = MLNQuery(mln=self.mln, db=self.db, method='EnumerationAsk').run()
@@ -87,6 +129,7 @@ class Main():
         
         winner = np.argmax(probs)
         
+        print('[API]', self.classes[winner], probs[winner])
         return self.classes[winner], probs[winner]
 
     def add(self, evidence, etype):
@@ -107,6 +150,7 @@ class Main():
         else:
             resp = 'Invalid evidence type. Valid types are: event or object'
 
+        print('[API]', resp)
         return resp
 
     def delete(self, evidence, etype):
@@ -130,6 +174,7 @@ class Main():
         else:
             resp = 'Invalid evidence type. Valid types are: event or object' 
 
+        print('[API]', resp)
         return resp
 
     # Additional Logic
@@ -142,7 +187,7 @@ class Main():
         return
 
 if __name__ == '__main__':
-    threading.Thread(target=lambda: rospy.init_node('ralt_har_mln_basic', disable_signals=True)).start()
+    # threading.Thread(target=lambda: rospy.init_node('ralt_har_mln_basic', disable_signals=True)).start()
 
     m = Main()
 
@@ -157,6 +202,16 @@ if __name__ == '__main__':
         m.reset()
 
         return 'OK'
+
+    @app.route('/evidence', methods = ['POST'])
+    def evidence_handler():
+        e_preds, e_confs = m.evidence()
+
+        result = {}
+        result['e_preds'] = e_preds
+        result['e_confs'] = e_confs
+
+        return jsonify(result)
 
     @app.route('/reason', methods = ['POST'])
     def reason_handler():
