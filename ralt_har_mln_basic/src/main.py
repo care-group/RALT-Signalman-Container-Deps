@@ -34,8 +34,8 @@ class Main():
         self.pub_ros_evidence = rospy.Publisher('/ralt_har_mln/evidence', har_evidence_list, queue_size=10)
         
         self.action_name = 'har_reason'
-        self.as = actionlib.SimpleActionServer(self.action_name, ralt_signalman_messages.msg.har_reasonAction, execute_cb=self.ros_reason_callback)
-        self.as.start()
+        self._as = actionlib.SimpleActionServer(self.action_name, ralt_signalman_messages.msg.har_reasonAction, execute_cb=self.ros_reason_callback)
+        self._as.start()
 
         rospack = rospkg.RosPack()
         rel_path = rospack.get_path('ralt_har_mln_basic')
@@ -84,7 +84,7 @@ class Main():
         self._result.pred = pred
         self._result.conf = conf
         
-        self.as.set_succeeded(self._result)
+        self._as.set_succeeded(self._result)
         
     def ros_reset_callback(self, msg):
         if msg.reset == 'reset':
