@@ -1,13 +1,16 @@
 #! /usr/bin/env python3
 
 import os
-import rospy
-import rospkg
 import threading
+
 from pracmln import MLN, Database, MLNQuery
 import numpy as np
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+import rospy
+import rospkg
+import actionlib
 
 from std_msgs import msg
 from std_msgs.msg import String
@@ -15,8 +18,12 @@ from std_msgs.msg import String
 from ralt_signalman_messages.msg import har_simple_evidence
 from ralt_signalman_messages.msg import har_reset
 from ralt_signalman_messages.msg import har_evidence_list
+import ralt_signalman_messages.msg
 
 class Main():
+    _ros_reason_feedback = ralt_signalman_messages.msg.har_reasonFeedback()
+    _ros_reason_result = ralt_signalman_messages.msg.har_reasonResult()
+    
     def __init__(self):
         rospy.init_node('ralt_har_mln_basic', disable_signals=True)
 
@@ -25,6 +32,10 @@ class Main():
         self.sub_ros_reset = rospy.Subscriber('/ralt_har_mln/reset', har_reset, callback=self.ros_reset_callback)
 
         self.pub_ros_evidence = rospy.Publisher('/ralt_har_mln/evidence', har_evidence_list, queue_size=10)
+        
+        self.action_name = 'har_reason'
+        self.as = actionlib.SimpleActionServer(self.action_name, ralt_signalman_messages.msg.har_reasonAction, execute_cb=self.ros_reason_callback)
+        self.as.start()
 
         rospack = rospkg.RosPack()
         rel_path = rospack.get_path('ralt_har_mln_basic')
@@ -66,6 +77,14 @@ class Main():
             self.delete(msg.evidence, msg.etype)
         else:
             print('[ROS] Invalid command in ROS evidence topic.')
+            
+    def ros_reason_callback(self, goal):
+        pred, conf = self.reason()
+        
+        self._result.pred = pred
+        self._result.conf = conf
+        
+        self.as.set_succeeded(self._result)
         
     def ros_reset_callback(self, msg):
         if msg.reset == 'reset':
