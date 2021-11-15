@@ -33,7 +33,7 @@ class Main():
 
         self.pub_ros_evidence = rospy.Publisher('/ralt_har_mln/evidence', har_evidence_list, queue_size=10)
         
-        self.action_name = 'har_reason'
+        self.action_name = 'ralt_har_mln_basic/har_reason'
         self._as = actionlib.SimpleActionServer(self.action_name, ralt_signalman_messages.msg.har_reasonAction, execute_cb=self.ros_reason_callback)
         self._as.start()
 
