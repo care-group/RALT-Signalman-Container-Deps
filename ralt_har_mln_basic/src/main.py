@@ -25,7 +25,7 @@ class Main():
     _ros_reason_result = ralt_signalman_messages.msg.har_reasonResult()
     
     def __init__(self):
-        rospy.init_node('ralt_har_mln_basic', disable_signals=True)
+        rospy.init_node('ralt_har_mln', disable_signals=True)
 
         self.sub_sel_evidence = rospy.Subscriber('/ralt_semantic_event_publisher/simple', har_simple_evidence, callback=self.ros_evidence_callback)
         self.sub_ros_evidence = rospy.Subscriber('/ralt_har_mln/add_delete', har_simple_evidence, callback=self.ros_evidence_callback)
@@ -33,7 +33,7 @@ class Main():
 
         self.pub_ros_evidence = rospy.Publisher('/ralt_har_mln/evidence', har_evidence_list, queue_size=10)
         
-        self.action_name = 'ralt_har_mln_basic/har_reason'
+        self.action_name = 'ralt_har_mln/har_reason'
         self._as = actionlib.SimpleActionServer(self.action_name, ralt_signalman_messages.msg.har_reasonAction, execute_cb=self.ros_reason_callback)
         self._as.start()
 
