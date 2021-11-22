@@ -1,6 +1,6 @@
 activity = {PreparingDrink, Cooking, WashingDishes, Cleaning, Tidying}
 event = {Kettle, Tap, Oven, Fridge, DinnerwareCabinet, DrinkwareCabinet, FoodCabinet, CutleryDrawer, Bin, WashingMachine}
-object = {Bottle, WineGlass, Cup, Fork, Knife, Spoon}
+object = {Bottle, WineGlass, Cup, Bowl, Plate, Fork, Knife, Spoon}
 
 class(a, activity?)
 
