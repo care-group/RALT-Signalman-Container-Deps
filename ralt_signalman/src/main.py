@@ -171,7 +171,7 @@ if __name__ == '__main__':
         return resp
     
     @app.route('/object', methods = ['POST'])
-    def update_handler():
+    def object_handler():
         data = request.get_json()
 
         object = data['object']
