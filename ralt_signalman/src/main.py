@@ -29,10 +29,13 @@ class Main():
         self.activity = 'none'
 
         self.participant = 999
+        
+        self.object_queue = []
 
         self.load_topics()
 
         self.act_pub = rospy.Publisher('/activity_label', String, queue_size=10)
+        self.obj_pub = rospy.Publisher('/object_label', String, queue_size=10)
 
         print('Ready.')
 
@@ -69,6 +72,9 @@ class Main():
 
                     while not rospy.core.is_shutdown() and self.run:
                         self.act_pub.publish(self.activity)
+                        if self.object_queue:
+                            object = self.object_queue.pop(0)
+                            self.obj_pub.publish(object)
                         rospy.rostime.wallsleep(0.5)
 
                 self.p.terminate()            
@@ -88,6 +94,9 @@ class Main():
         self.participant = participant
         fcc = FolderCheckCreate()
         fcc.run(self.participant)
+        
+    def register_object(self, object):
+        self.object_queue.append(object)
 
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
@@ -158,6 +167,18 @@ if __name__ == '__main__':
         resp = "OK"
 
         m.set_activity(activity)
+
+        return resp
+    
+    @app.route('/object', methods = ['POST'])
+    def update_handler():
+        data = request.get_json()
+
+        object = data['object']
+
+        resp = "OK"
+
+        m.register_object(object)
 
         return resp
 
