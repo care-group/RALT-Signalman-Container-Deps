@@ -130,7 +130,7 @@ class Main():
             e_preds.append(e[0])
             e_confs.append(e[1])
 
-        print('[API]', e_preds, e_confs)
+        # print('[API]', e_preds, e_confs)
         return e_preds, e_confs
 
     def reason(self):
