@@ -6,9 +6,9 @@ class CSVTools():
         date_time = strftime("%Y%m%d-%H%M%S")
 
         if activity == 'none':
-            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/events_' + date_time + '.csv'
+            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/labels_' + date_time + '.csv'
         else:
-            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/events_' + date_time + '_' + activity + '.csv'
+            self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/labels_' + date_time + '_' + activity + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
 
