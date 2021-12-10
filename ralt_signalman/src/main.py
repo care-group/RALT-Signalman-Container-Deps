@@ -58,7 +58,7 @@ class Main():
         while(True):
             if self.run:
                 self.csv_tools = CSVTools()
-                self.csv_tools.create_event_file('none', self.participant)
+                self.csv_tools.create_labels_file('none', self.participant)
                 
                 date_time = strftime("%Y%m%d-%H%M%S")
 
@@ -96,7 +96,7 @@ class Main():
         timestamp_ms = time.time()
         timestamp_formatted = time.ctime(self.timestamp_ms)
         labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
-        self.csv_tools.write_labels(self.labels)
+        self.csv_tools.write_labels([labels])
             
     def set_participant(self, participant):
         self.participant = participant
@@ -108,7 +108,7 @@ class Main():
         timestamp_ms = time.time()
         timestamp_formatted = time.ctime(self.timestamp_ms)
         labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
-        self.csv_tools.write_labels(self.labels)
+        self.csv_tools.write_labels([labels])
 
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
