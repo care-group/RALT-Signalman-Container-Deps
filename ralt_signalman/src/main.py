@@ -2,7 +2,7 @@
 from rosbag.bag import Bag
 import rospy
 import threading
-from time import time, strftime, sleep
+from time import time, strftime, sleep, ctime
 import subprocess
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -93,8 +93,8 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
-        timestamp_ms = time.time()
-        timestamp_formatted = time.ctime(self.timestamp_ms)
+        timestamp_ms = time()
+        timestamp_formatted = ctime(self.timestamp_ms)
         labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
         self.csv_tools.write_labels([labels])
             
@@ -105,8 +105,8 @@ class Main():
         
     def register_object(self, object):
         self.object_queue.append(object)
-        timestamp_ms = time.time()
-        timestamp_formatted = time.ctime(self.timestamp_ms)
+        timestamp_ms = time()
+        timestamp_formatted = ctime(self.timestamp_ms)
         labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
         self.csv_tools.write_labels([labels])
 
