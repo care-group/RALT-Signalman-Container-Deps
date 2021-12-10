@@ -1,16 +1,7 @@
 from time import strftime
 import csv
 
-from log import Log
-
 class CSVTools():
-    def __init__(self):
-        self.id = 'csv_tools'
-
-        self.logger = Log(self.id)
-
-        self.logger.log_great('Ready.')
-
     def create_event_file(self, activity, participant):
         date_time = strftime("%Y%m%d-%H%M%S")
 
@@ -20,7 +11,6 @@ class CSVTools():
             self.csv_filename = '/home/sandbox/output/' + 'P' + str(participant) + '/events_' + date_time + '_' + activity + '.csv'
 
         msg = 'The events CSV file for this session is: ' + self.csv_filename
-        self.logger.log(msg)
 
         with open(self.csv_filename, 'w') as fd:
             writer = csv.writer(fd)
