@@ -58,7 +58,7 @@ class Main():
         while(True):
             if self.run:
                 self.csv_tools = CSVTools()
-                self.csv_tools.create_labels_file('none', self.participant)
+                self.csv_tools.create_labels_file(self.activity, self.participant)
                 
                 date_time = strftime("%Y%m%d-%H%M%S")
 
@@ -94,7 +94,7 @@ class Main():
     def set_activity(self, activity):
         self.activity = activity
         timestamp_ms = time()
-        timestamp_formatted = ctime(self.timestamp_ms)
+        timestamp_formatted = ctime(timestamp_ms)
         labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
         self.csv_tools.write_labels([labels])
             
@@ -106,7 +106,7 @@ class Main():
     def register_object(self, object):
         self.object_queue.append(object)
         timestamp_ms = time()
-        timestamp_formatted = ctime(self.timestamp_ms)
+        timestamp_formatted = ctime(timestamp_ms)
         labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
         self.csv_tools.write_labels([labels])
 
