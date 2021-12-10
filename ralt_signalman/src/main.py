@@ -13,6 +13,7 @@ from sensor_msgs.msg import Image, CompressedImage
 
 from bag_merge import merge_bag
 from check_create_folder_tool import FolderCheckCreate
+from csv_tools import CSVTools
 
 class Main():
     def __init__(self):
@@ -56,6 +57,9 @@ class Main():
     def loop(self):
         while(True):
             if self.run:
+                self.csv_tools = CSVTools()
+                self.csv_tools.create_event_file('none', self.participant)
+                
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
@@ -89,6 +93,7 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
+        self.csv_tools.write_labels(self.activity, self.object_queue[0])
             
     def set_participant(self, participant):
         self.participant = participant
@@ -97,6 +102,7 @@ class Main():
         
     def register_object(self, object):
         self.object_queue.append(object)
+        self.csv_tools.write_labels(self.activity, self.object_queue[0])
 
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
