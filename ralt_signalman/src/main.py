@@ -56,10 +56,7 @@ class Main():
             
     def loop(self):
         while(True):
-            if self.run:
-                self.csv_tools = CSVTools()
-                self.csv_tools.create_labels_file(self.activity, self.participant)
-                
+            if self.run:               
                 date_time = strftime("%Y%m%d-%H%M%S")
 
                 if self.activity == 'none':
@@ -137,6 +134,8 @@ if __name__ == '__main__':
         m.set_activity(activity)
 
         if command == "True":
+            self.csv_tools = CSVTools()
+            self.csv_tools.create_labels_file(self.activity, self.participant)
             m.set_state(True)
         elif command == "False":
             m.set_state(False)
