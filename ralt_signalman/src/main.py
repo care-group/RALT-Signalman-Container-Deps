@@ -32,6 +32,8 @@ class Main():
         self.participant = 999
         
         self.object_queue = []
+        
+        self.csv_created = False
 
         self.load_topics()
 
@@ -87,12 +89,17 @@ class Main():
             self.run = True
         else:
             self.run = False
+            self.csv_created = False
 
     def set_activity(self, activity):
         self.activity = activity
         timestamp_ms = time()
         timestamp_formatted = ctime(timestamp_ms)
         labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
+        if not self.csv_created:
+            self.csv_tools = CSVTools()
+            self.csv_tools.create_labels_file(self.activity, self.participant)
+            self.csv_created = True
         self.csv_tools.write_labels([labels])
             
     def set_participant(self, participant):
@@ -105,6 +112,10 @@ class Main():
         timestamp_ms = time()
         timestamp_formatted = ctime(timestamp_ms)
         labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
+        if not self.csv_created:
+            self.csv_tools = CSVTools()
+            self.csv_tools.create_labels_file(self.activity, self.participant)
+            self.csv_created = True
         self.csv_tools.write_labels([labels])
 
     def set_merged_bag_name(self, name):
@@ -134,8 +145,6 @@ if __name__ == '__main__':
         m.set_activity(activity)
 
         if command == "True":
-            self.csv_tools = CSVTools()
-            self.csv_tools.create_labels_file(self.activity, self.participant)
             m.set_state(True)
         elif command == "False":
             m.set_state(False)
