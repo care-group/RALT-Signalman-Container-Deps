@@ -93,7 +93,10 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
-        self.csv_tools.write_labels(self.activity, self.object_queue[0])
+        timestamp_ms = time.time()
+        timestamp_formatted = time.ctime(self.timestamp_ms)
+        labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
+        self.csv_tools.write_labels(self.labels)
             
     def set_participant(self, participant):
         self.participant = participant
@@ -102,7 +105,10 @@ class Main():
         
     def register_object(self, object):
         self.object_queue.append(object)
-        self.csv_tools.write_labels(self.activity, self.object_queue[0])
+        timestamp_ms = time.time()
+        timestamp_formatted = time.ctime(self.timestamp_ms)
+        labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
+        self.csv_tools.write_labels(self.labels)
 
     def set_merged_bag_name(self, name):
         self.merged_bag_name = name
