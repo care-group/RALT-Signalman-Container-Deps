@@ -56,6 +56,9 @@ class AppleWatchPublisher():
                             event = [data, timestamp_ms, timestamp_formatted]
                             events = [event]
                             csvt.write_events(events)
+                            
+                            if not self.run:
+                                break
                         else:
                             print('Client disconnect. Listening for new connection...')
                             break
