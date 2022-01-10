@@ -27,20 +27,20 @@ class AppleWatchPublisher():
         print('Ready.')
 
     def loop(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        s.bind((HOST, PORT))
+        s.listen(1)
+        
         while True:
             if self.run:
                 fcc = FolderCheckCreate()
                 fcc.run(self.participant)
                 
+                conn, client = s.accept()
+            
                 csvt = CSVTools()
                 csvt.create_event_file(self.activity, self.participant)
-
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-                s.bind((HOST, PORT))
-                s.listen(1)
-
-                conn, client = s.accept()
 
                 try:
                     print('Client connected. Waiting for data...')
