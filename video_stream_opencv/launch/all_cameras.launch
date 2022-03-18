@@ -8,8 +8,5 @@
 	<include file="$(find video_stream_opencv)/launch/ch06.launch" />
 	<include file="$(find video_stream_opencv)/launch/ch07.launch" />
 	<include file="$(find video_stream_opencv)/launch/ch08.launch" />
-	<include file="$(find video_stream_opencv)/launch/webcam1.launch" />
-	<include file="$(find video_stream_opencv)/launch/webcam2.launch" />
-	<include file="$(find video_stream_opencv)/launch/webcam3.launch" />
-
+	
 </launch>
