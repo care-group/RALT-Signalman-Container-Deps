@@ -2,7 +2,7 @@
    <!-- launch video stream -->
    <include file="$(find video_stream_opencv)/launch/camera.launch" >
         <!-- node name and ros graph name -->
-        <arg name="camera_name" value="webcam" />
+        <arg name="camera_name" value="webcam3" />
         <!-- means video device 0, /dev/video0 -->
         <arg name="video_stream_provider" value="4" />
         <!-- set camera fps to (if the device allows) -->
