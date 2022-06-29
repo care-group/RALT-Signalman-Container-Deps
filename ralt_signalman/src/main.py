@@ -43,7 +43,7 @@ class Main():
         print('Ready.')
 
     def load_topics(self):
-        with open('/home/sandbox/config/topics.txt') as f:
+        with open('/home/sandbox/config/topics_robot_1.txt') as f:
             lines = f.readlines()
 
             lines_clean = []
@@ -53,7 +53,20 @@ class Main():
             for line in lines_clean:
                 self.topics.append(line)
             
-            print('Will check for messages on these topics...')
+            print('Will check for messages on these topics for Robot 1...')
+            print(self.topics)
+
+        with open('/home/sandbox/config/topics_other.txt') as f:
+            lines = f.readlines()
+
+            lines_clean = []
+            for line in lines:
+                lines_clean.append(line.rstrip('\n'))
+
+            for line in lines_clean:
+                self.topics.append(line)
+            
+            print('Will also check for messages on these topics (must be on same master as Robot 1)...')
             print(self.topics)
             
     def loop(self):
@@ -210,16 +223,16 @@ if __name__ == '__main__':
 
         main_bag = m.bag_name
         
-        hsr_bag = data
+        secondary_bag = data
 
-        print(main_bag, hsr_bag)
+        print(main_bag, secondary_bag)
 
         out_bag = main_bag.strip('.bag')
         out_bag = out_bag + '_merged.bag'
         
         m.set_merged_bag_name(out_bag)
 
-        merge_bag(main_bag, hsr_bag, outfile=out_bag) 
+        merge_bag(main_bag, secondary_bag, outfile=out_bag) 
 
         return jsonify(resp)
 
