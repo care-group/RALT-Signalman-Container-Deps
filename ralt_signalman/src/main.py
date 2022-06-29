@@ -21,7 +21,10 @@ class Main():
 
         self.date_time = strftime("%Y%m%d-%H%M%S")
 
-        self.topics = []
+        self.topics_robot_1 = []
+        self.topics_robot_2 = []
+        self.topics_other = []
+        self.combined_topics = []
 
         self.run = False
         self.bag_name = 'No current or previous bag has been saved.'
@@ -51,10 +54,23 @@ class Main():
                 lines_clean.append(line.rstrip('\n'))
 
             for line in lines_clean:
-                self.topics.append(line)
+                self.topics_robot_1.append(line)
             
             print('Will check for messages on these topics for Robot 1...')
-            print(self.topics)
+            print(self.topics_robot_1)
+
+        with open('/home/sandbox/config/topics_robot_2.txt') as f:
+            lines = f.readlines()
+
+            lines_clean = []
+            for line in lines:
+                lines_clean.append(line.rstrip('\n'))
+
+            for line in lines_clean:
+                self.topics_robot_2.append(line)
+            
+            print('Will check for messages on these topics for Robot 2...')
+            print(self.topics_robot_2)
 
         with open('/home/sandbox/config/topics_other.txt') as f:
             lines = f.readlines()
@@ -64,10 +80,12 @@ class Main():
                 lines_clean.append(line.rstrip('\n'))
 
             for line in lines_clean:
-                self.topics.append(line)
+                self.topics_other.append(line)
             
             print('Will also check for messages on these topics (must be on same master as Robot 1)...')
-            print(self.topics)
+            print(self.topics_other)
+
+        self.combined_topics = self.topics_robot_1 + self.topics_other
             
     def loop(self):
         while(True):
@@ -81,7 +99,7 @@ class Main():
 
                 while(self.run):
                     cmd = ['rosbag', 'record', '-O', self.bag_name]
-                    for topic in self.topics:
+                    for topic in self.combined_topics:
                         cmd.append(topic)
                     
                     self.p = subprocess.Popen(cmd)
@@ -184,7 +202,9 @@ if __name__ == '__main__':
     def status_handler():
         status = {}
 
-        status["topics"] = m.topics
+        status["topics_robot_1"] = m.topics_robot_1
+        status["topics_robot_2"] = m.topics_robot_2
+        status["topics_other"] = m.topics_other
         status["running"] = m.run
         status["bagfile"] = m.bag_name
         status["merged_bagfile"] = m.merged_bag_name
