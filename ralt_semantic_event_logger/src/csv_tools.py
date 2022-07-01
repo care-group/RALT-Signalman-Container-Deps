@@ -24,7 +24,7 @@ class CSVTools():
 
         with open(self.csv_filename, 'w') as fd:
             writer = csv.writer(fd)
-            writer.writerow(['predicate', 'x', 'y', 'predicate(x,y)', 'event', 'origin', 'raw', 'timestamp (ms)', 'timestamp (formatted)', 'index'])
+            writer.writerow(['predicate', 'x', 'y', 'predicate(x,y)', 'event', 'origin', 'raw', 'timestamp (s)', 'timestamp (formatted)', 'index'])
 
     def write_events(self, events):
         with open(self.csv_filename, 'a') as fd:
