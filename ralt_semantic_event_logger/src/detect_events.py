@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 import copy
+import rospy
 
 from log import Log
 
@@ -40,8 +41,8 @@ class DetectEvents():
             self.sensors[key]['raw_state'] = current_state
 
     def step(self, current, previous, step_count):
-        self.timestamp_ms = time.time()
-        self.timestamp_formatted = time.ctime(self.timestamp_ms)
+        self.timestamp_s = rospy.Time.now()
+        self.timestamp_formatted = time.ctime(self.timestamp_s)
         self.step_count = step_count
 
         events = []
@@ -183,7 +184,7 @@ class DetectEvents():
             event_type = self.sensors[key]['event']
             origin = key
             raw = self.sensors[key]['raw_state']
-            timestamp_ms = self.timestamp_ms
+            timestamp_s = self.timestamp_s
             timestamp_formatted = self.timestamp_formatted
             step_count = self.step_count
 
@@ -210,7 +211,7 @@ class DetectEvents():
                     y = self.sensors[key]['logic']['y']
                     predicate_xy = predicate + '(' + x + ',' + y + ')'
 
-            event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_ms, timestamp_formatted, step_count]
+            event = [predicate, x, y, predicate_xy, event_type, origin, raw, timestamp_s, timestamp_formatted, step_count]
 
             if self.sensors[key]['ignore_false'] != 'true':
                 events.append(event)

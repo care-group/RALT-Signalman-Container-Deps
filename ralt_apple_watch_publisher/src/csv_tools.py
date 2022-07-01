@@ -19,7 +19,7 @@ class CSVTools():
 
         with open(self.csv_filename, 'w') as fd:
             writer = csv.writer(fd)
-            writer.writerow(['data', 'timestamp (ms)', 'timestamp (formatted)'])
+            writer.writerow(['data', 'timestamp (s)', 'timestamp (formatted)'])
 
     def write_events(self, events):
         with open(self.csv_filename, 'a') as fd:

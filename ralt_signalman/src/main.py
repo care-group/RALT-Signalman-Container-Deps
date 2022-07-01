@@ -124,9 +124,11 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
-        timestamp_ms = time()
-        timestamp_formatted = ctime(timestamp_ms)
-        labels = [self.activity, 'n/a', timestamp_ms, timestamp_formatted]
+        # timestamp_s = time()
+        timestamp_s = rospy.Time.now()
+        timestamp_s = timestamp_s.secs
+        timestamp_formatted = ctime(timestamp_s)
+        labels = [self.activity, 'n/a', timestamp_s, timestamp_formatted]
         if not self.csv_created:
             self.csv_tools = CSVTools()
             self.csv_tools.create_labels_file(self.activity, self.participant)
@@ -140,9 +142,11 @@ class Main():
         
     def register_object(self, object):
         self.object_queue.append(object)
-        timestamp_ms = time()
-        timestamp_formatted = ctime(timestamp_ms)
-        labels = [self.activity, self.object_queue[-1], timestamp_ms, timestamp_formatted]
+        # timestamp_s = time()
+        timestamp_s = rospy.Time.now()
+        timestamp_s = timestamp_s.secs
+        timestamp_formatted = ctime(timestamp_s)
+        labels = [self.activity, self.object_queue[-1], timestamp_s, timestamp_formatted]
         if not self.csv_created:
             self.csv_tools = CSVTools()
             self.csv_tools.create_labels_file(self.activity, self.participant)
