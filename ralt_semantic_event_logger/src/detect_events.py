@@ -40,8 +40,8 @@ class DetectEvents():
             self.sensors[key]['semantic_state'] = semantic_state
             self.sensors[key]['raw_state'] = current_state
 
-    def step(self, current, previous, step_count, rospy_time):
-        self.timestamp_s = rospy_time
+    def step(self, current, previous, step_count):
+        self.timestamp_s = time.time()
         self.timestamp_formatted = time.ctime(self.timestamp_s)
         self.step_count = step_count
 

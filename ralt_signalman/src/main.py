@@ -124,9 +124,7 @@ class Main():
 
     def set_activity(self, activity):
         self.activity = activity
-        # timestamp_s = time()
-        timestamp_s = rospy.Time.now()
-        timestamp_s = timestamp_s.secs
+        timestamp_s = time()
         timestamp_formatted = ctime(timestamp_s)
         labels = [self.activity, 'n/a', timestamp_s, timestamp_formatted]
         if not self.csv_created:
@@ -143,8 +141,7 @@ class Main():
     def register_object(self, object):
         self.object_queue.append(object)
         # timestamp_s = time()
-        timestamp_s = rospy.Time.now()
-        timestamp_s = timestamp_s.secs
+        timestamp_s = time()
         timestamp_formatted = ctime(timestamp_s)
         labels = [self.activity, self.object_queue[-1], timestamp_s, timestamp_formatted]
         if not self.csv_created:

@@ -50,8 +50,7 @@ class AppleWatchPublisher():
                             print(data)
                             message = str(data)
                             
-                            timestamp_s = rospy.Time.now()
-                            timestamp_s = timestamp_s.secs
+                            timestamp_s = time.time()
                             timestamp_formatted = time.ctime(timestamp_s)
 
                             event = [data, timestamp_s, timestamp_formatted]

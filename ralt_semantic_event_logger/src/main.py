@@ -85,7 +85,7 @@ class Main():
                         self.detect_events.init_semantic_state(self.current_state)
 
                     if self.step > 0:
-                        events = self.detect_events.step(self.current_state, self.previous_state, self.step, rospy.Time.now())
+                        events = self.detect_events.step(self.current_state, self.previous_state, self.step)
                         if len(events) > 0:
                             self.csv_tools.write_events(events)
                             if not rospy.is_shutdown():
@@ -129,7 +129,7 @@ class Main():
                         self.detect_events.init_semantic_state(self.current_state)
 
                     if self.step > 0:
-                        events = self.detect_events.step(self.current_state, self.previous_state, self.step, rospy.Time.now())
+                        events = self.detect_events.step(self.current_state, self.previous_state, self.step)
                         if len(events) > 0:
                             if not rospy.is_shutdown():
                                 for event in events:
