@@ -14,8 +14,6 @@ class DetectEvents():
         self.sensors = sensors
         self.sensor_labels = sensor_labels
         
-        rospy.init_node('ralt_semantic_event_logger', disable_signals=True)
-
         self.logger.log_great('Ready.')
 
     def init_semantic_state(self, current):
@@ -42,8 +40,8 @@ class DetectEvents():
             self.sensors[key]['semantic_state'] = semantic_state
             self.sensors[key]['raw_state'] = current_state
 
-    def step(self, current, previous, step_count):
-        self.timestamp_s = rospy.Time.now()
+    def step(self, current, previous, step_count, rospy_time):
+        self.timestamp_s = rospy_time
         self.timestamp_formatted = time.ctime(self.timestamp_s)
         self.step_count = step_count
 
