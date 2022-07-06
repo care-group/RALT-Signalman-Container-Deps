@@ -14,7 +14,7 @@ class DetectEvents():
         self.sensors = sensors
         self.sensor_labels = sensor_labels
         
-        rospy.init_node('ralt_semantic_event_logger_detect_events', disable_signals=True)
+        rospy.init_node('ralt_semantic_event_logger', disable_signals=True)
 
         self.logger.log_great('Ready.')
 
