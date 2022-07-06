@@ -28,8 +28,6 @@ class Main():
         self.logger = Log(self.id)
         self.logger.startup_msg()
         
-        rospy.init_node('ralt_semantic_event_logger', disable_signals=True)
-
         self.run = False
 
         self.pub_full = pub_full
@@ -168,6 +166,8 @@ class Main():
         fcc.run(self.participant)
 
 if __name__ == '__main__':
+    threading.Thread(target=lambda: rospy.init_node('ralt_semantic_event_logger', disable_signals=True)).start()
+    
     pub_full = rospy.Publisher('ralt_semantic_event_publisher/full', String, queue_size=10)
     pub_simple = rospy.Publisher('ralt_semantic_event_publisher/simple', har_simple_evidence, queue_size=10)
     
